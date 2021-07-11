@@ -12,17 +12,17 @@ const ClockSolitare = () => {
     return (
         <Grid container spacing={2}>
             width: {width} ~ height: {height}
-            <Grid item xs={12}>
+            <Grid container xs={12}>
                 <PlayingCard suite={"diamond"} value={"8"} revealCard={true}/>
-                <PlayingCard suite={"diamond"} value={"10"}revealCard={false}/>
-                <PlayingCard suite={"club"} value={"10"}revealCard={false}/>
-                <PlayingCard suite={"club"} value={"8"}revealCard={false}/>
+                <PlayingCard suite={"diamond"} value={"10"}revealCard={true}/>
+                <PlayingCard suite={"club"} value={"10"}revealCard={true}/>
+                <PlayingCard suite={"club"} value={"8"}revealCard={true}/>
 
-                <PlayingCard suite={"heart"} value={"10"}revealCard={false}/>
-                <PlayingCard suite={"heart"} value={"8"}revealCard={false}/>
+                <PlayingCard suite={"heart"} value={"10"}revealCard={true}/>
+                <PlayingCard suite={"heart"} value={"8"}revealCard={true}/>
 
-                <PlayingCard suite={"spade"} value={"10"}revealCard={false}/>
-                <PlayingCard suite={"spade"} value={"8"}revealCard={false}/>
+                <PlayingCard suite={"spade"} value={"10"}revealCard={true}/>
+                <PlayingCard suite={"spade"} value={"8"}revealCard={true}/>
             </Grid>
             
 

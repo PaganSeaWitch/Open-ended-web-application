@@ -15,12 +15,7 @@ const PlayingCard = ({suite, value, revealCard}) => {
     
     const { height, width } = useWindowDimensions();
     const linebreak = "\n"
-    const topLeftCard = "┌"
-    const topRightCard = "┐"
-    const bottomLeftCard = "└"
-    const bottomRightCard = "┘";
-    const cardHeightSymbol = '│';
-    const cardWidthSymbol = "─";
+
     const diamonds = "♦";
     const spades = "♠";
     const hearts = "♥";
@@ -28,13 +23,25 @@ const PlayingCard = ({suite, value, revealCard}) => {
     const cardBack = "░";
 
     const getCardHeight = () =>{
-        
-        return Math.ceil(height / 100) ;
+        const tempHeight = Math.ceil(height / 100) ;
+        console.log(tempHeight)
+        if(tempHeight < 5)
+        {
+            return 5
+        }
+        return tempHeight
     }
 
 
     const getCardWidth = () =>{
-        return Math.ceil(width / 100) / 1.3 - 2;
+        const tempWidth = Math.ceil(width / 10)/2;
+        if(tempWidth < 45){
+            return 45
+        }
+
+        return tempWidth
+        
+
     }
 
 
@@ -43,26 +50,23 @@ const PlayingCard = ({suite, value, revealCard}) => {
     }
 
 
-    const getTopCardPart =  () =>{
-       return linebreak + topLeftCard + cardWidthSymbol.repeat(getCardWidth() <= 0 ? 1: getCardWidth()) + topRightCard 
-    }           
 
-
-    const getBottomCardPart = () =>{
-        return linebreak + bottomLeftCard + cardWidthSymbol.repeat(getCardWidth() <= 0 ? 1: getCardWidth()) + bottomRightCard
-    }
 
 
     const getTopValueCardPart = () =>{
 
-            return linebreak + cardHeightSymbol + value + ".".repeat(getOptLengthForCardValue() <= 0 ? 1 : getOptLengthForCardValue()) + cardHeightSymbol
+            return linebreak  + value + ".".repeat(getOptLengthForCardValue() <= 0 ? 1 : getOptLengthForCardValue()) 
 
     }
+    const getBottomValueCardPart = () =>{
 
+        return linebreak+ ".".repeat(getOptLengthForCardValue() <= 0 ? 1 : getOptLengthForCardValue())   + value 
+
+}
 
     const getMiddleCardPart = () =>{
 
-        return linebreak + cardHeightSymbol + ".".repeat(getOptLengthForMid() <= 0 ? 1 : getOptLengthForMid()) + cardHeightSymbol
+        return linebreak  + ".".repeat(getOptLengthForMid() <= 0 ? 1 : getOptLengthForMid()) 
     }
 
 
@@ -98,24 +102,20 @@ const PlayingCard = ({suite, value, revealCard}) => {
             add--;
         }
         
-        return linebreak + cardHeightSymbol + ".".repeat(getOptLengthForMidSuite() <= 0 ? 1 : getOptLengthForMidSuite()) +getSuite() + ".".repeat(getOptLengthForMidSuite() <= 0 ? 1 : getOptLengthForMidSuite()+add) + cardHeightSymbol
+        return linebreak  + ".".repeat(getOptLengthForMidSuite() <= 0 ? 1 : getOptLengthForMidSuite()) +getSuite() + ".".repeat(getOptLengthForMidSuite() <= 0 ? 1 : getOptLengthForMidSuite()+add) 
     }
 
 
-    const getBottomValueCardPart = () =>{
-
-        return linebreak +cardHeightSymbol  + ".".repeat(getOptLengthForCardValue() <= 0 ? 1 : getOptLengthForCardValue()) + value + cardHeightSymbol
-    }
 
 
     const getTopSuiteCardPart = () =>{
-        return linebreak + cardHeightSymbol + getSuite() + ".".repeat(getOptLengthForCardSuite() <= 0 ? 1 : getOptLengthForCardSuite()) + cardHeightSymbol
+        return linebreak  + getSuite() + ".".repeat(getOptLengthForCardSuite() <= 0 ? 1 : getOptLengthForCardSuite()) 
 
     }
 
 
     const getBottomSuiteCardPart = () =>{
-        return linebreak + cardHeightSymbol  + ".".repeat(getOptLengthForCardSuite() <= 0 ? 1 : getOptLengthForCardSuite()) + getSuite() + cardHeightSymbol
+        return linebreak   + ".".repeat(getOptLengthForCardSuite() <= 0 ? 1 : getOptLengthForCardSuite()) + getSuite() 
 
     }
 
@@ -123,13 +123,13 @@ const PlayingCard = ({suite, value, revealCard}) => {
     const getOptLengthForMidSuite = () =>{
         
         let periodAmount = 0;
-        const widthOfLine = calculateTextWidth(getTopCardPart())
+        const widthOfLine = getCardWidth()
 
-        let widthOfCard = calculateTextWidth(linebreak + cardHeightSymbol + ".".repeat(periodAmount) +getSuite() + ".".repeat(periodAmount) + cardHeightSymbol)
+        let widthOfCard = calculateTextWidth(linebreak  + ".".repeat(periodAmount) +getSuite() + ".".repeat(periodAmount) )
         
         while (widthOfCard < widthOfLine) {
             periodAmount++;
-            let string = linebreak + cardHeightSymbol + ".".repeat(periodAmount) +getSuite() + ".".repeat(periodAmount) + cardHeightSymbol;
+            let string = linebreak  + ".".repeat(periodAmount) +getSuite() + ".".repeat(periodAmount) ;
             widthOfCard = calculateTextWidth(string)
 
         }
@@ -138,14 +138,14 @@ const PlayingCard = ({suite, value, revealCard}) => {
 
 
     const getOptLengthForMid = () =>{
-        const widthOfLine = calculateTextWidth(getTopCardPart())
+        const widthOfLine = getCardWidth()
         let periodAmount = 0;
-        let widthOfCard =calculateTextWidth(linebreak + cardHeightSymbol + ".".repeat(periodAmount) + cardHeightSymbol)
+        let widthOfCard =calculateTextWidth(linebreak  + ".".repeat(periodAmount) )
 
         while(widthOfCard < widthOfLine)
         {
             periodAmount++;
-            let string = linebreak + cardHeightSymbol + ".".repeat(periodAmount) + cardHeightSymbol 
+            let string = linebreak  + ".".repeat(periodAmount)  
             widthOfCard = calculateTextWidth(string)
 
         }
@@ -154,14 +154,14 @@ const PlayingCard = ({suite, value, revealCard}) => {
 
 
     const getOptLengthForCardSuite = () =>{
-        const widthOfLine = calculateTextWidth(getTopCardPart())
+        const widthOfLine = getCardWidth()
         let periodAmount = 0;
-        let widthOfCard  =  calculateTextWidth(linebreak + cardHeightSymbol + getSuite() + ".".repeat(periodAmount) + cardHeightSymbol);
+        let widthOfCard  =  calculateTextWidth(linebreak  + getSuite() + ".".repeat(periodAmount) );
 
 
         while (widthOfCard < widthOfLine) {
             periodAmount++;
-            let string = linebreak + cardHeightSymbol + getSuite() + ".".repeat(periodAmount) + cardHeightSymbol 
+            let string = linebreak  + getSuite() + ".".repeat(periodAmount)  
             widthOfCard = calculateTextWidth(string)
             
         }
@@ -170,14 +170,14 @@ const PlayingCard = ({suite, value, revealCard}) => {
 
 
     const getOptLengthForCardValue = () =>{
-        const widthOfLine = calculateTextWidth(getTopCardPart())
+        const widthOfLine = getCardWidth()
         let periodAmount = 0;
-        let widthOfCard  =  calculateTextWidth(linebreak + cardHeightSymbol + value + ".".repeat(periodAmount) + cardHeightSymbol);
+        let widthOfCard  =  calculateTextWidth(linebreak  + value + ".".repeat(periodAmount) );
 
 
         while (widthOfCard < widthOfLine) {
             periodAmount++;
-            let string = linebreak + cardHeightSymbol + value + ".".repeat(periodAmount) + cardHeightSymbol 
+            let string = linebreak  + value + ".".repeat(periodAmount)   
             widthOfCard = calculateTextWidth(string)
             
         }
@@ -186,20 +186,20 @@ const PlayingCard = ({suite, value, revealCard}) => {
 
     
     const getCardBackMiddle = () =>{
-        return linebreak + cardHeightSymbol + cardBack.repeat(getOptLengthForCardBackMiddle() <= 0 ? 1 : getOptLengthForCardBackMiddle())  + cardHeightSymbol
+        return linebreak  + cardBack.repeat(getOptLengthForCardBackMiddle() <= 0 ? 1 : getOptLengthForCardBackMiddle())  
 
     }
 
 
     const getOptLengthForCardBackMiddle = () =>{
-        const widthOfLine = calculateTextWidth(getTopCardPart())
+        const widthOfLine = getCardWidth()
         let periodAmount = 0;
-        let widthOfCard =calculateTextWidth(linebreak + cardHeightSymbol + cardBack.repeat(periodAmount) + cardHeightSymbol)
+        let widthOfCard =calculateTextWidth(linebreak  + cardBack.repeat(periodAmount) )
 
         while(widthOfCard < widthOfLine)
         {
             periodAmount++;
-            let string = linebreak + cardHeightSymbol + cardBack.repeat(periodAmount) + cardHeightSymbol 
+            let string = linebreak  + cardBack.repeat(periodAmount) 
             widthOfCard = calculateTextWidth(string)
 
         }
@@ -207,36 +207,41 @@ const PlayingCard = ({suite, value, revealCard}) => {
     }
 
     const revealCardValue = () =>{
-        return  (getTopCardPart()
-        + getTopValueCardPart()
+        return  (getTopValueCardPart()
         + getTopSuiteCardPart()
-        + getMiddleCardPart().repeat(getMidHeight() -3 <= 0 ? 1: getMidHeight()-3)
+        + getMiddleCardPart().repeat(getMidHeight() -2 <= 0 ? 1: getMidHeight()-2)
         + getMiddleValueCardPart()
-        + getMiddleCardPart().repeat(getMidHeight() -3 <= 0 ? 1: getMidHeight()-3)
+        + getMiddleCardPart().repeat(getMidHeight() -2 <= 0 ? 1: getMidHeight()-2)
         + getBottomSuiteCardPart()
-        + getBottomValueCardPart()
-        + getBottomCardPart())
+        + getBottomValueCardPart())
     }
 
 
     const consealCardValue = () =>{
-        return  (getTopCardPart()
-        + getCardBackMiddle().repeat(getCardHeight() <= 0 ? 1: getCardHeight())
-        + getBottomCardPart())
+        return  getCardBackMiddle().repeat(getCardHeight() <= 0 ? 1: getCardHeight())
     }
 
-    const cardWidth = calculateTextWidth(getTopCardPart());
+    const getAdjustment = (cardWidth) =>{
+        const base = 10;
+        console.log(cardWidth)
+        return Math.ceil(cardWidth/10) + 10;
+        
+    }
+
+    const cardWidth = getCardWidth()
+
+    const adjustment = getAdjustment(cardWidth);
 
     const useStyles = makeStyles({
         root: {
-          maxWidth: cardWidth,
+          maxWidth: cardWidth +adjustment,
           "white-space": "pre-wrap",
           "background-color": "green",
         
         },
         content: {
           display: 'inline-block',
-          margin: '-38px -20px',
+          margin: "-30px -10px",
           transform: 'scale(1.0)',
           
         },

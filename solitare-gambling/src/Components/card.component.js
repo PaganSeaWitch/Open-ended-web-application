@@ -236,8 +236,8 @@ const PlayingCard = ({suite, value, revealCard}) => {
         root: {
           maxWidth: cardWidth +adjustment,
           "white-space": "pre-wrap",
-          "background-color": "green",
-        
+          "background-color": "white",
+          "color" : "red",
         },
         content: {
           display: 'inline-block',

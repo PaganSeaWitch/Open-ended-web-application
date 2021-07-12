@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Tangerine');
-ody {
+body {
   margin: 0;
   font-family: 'Tangerine';
   -webkit-font-smoothing: antialiased;
@@ -13,4 +13,7 @@ code {
 
 .card {
   white-space: pre-wrap;
+}
+.clock{
+  background-color: lightslategray;
 }

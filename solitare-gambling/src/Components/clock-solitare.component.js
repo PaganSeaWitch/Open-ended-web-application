@@ -7,25 +7,226 @@ import Grid from '@material-ui/core/Grid';
 const ClockSolitare = () => {
 	
 
-    const { height, width } = useWindowDimensions();
-
     return (
-        <Grid container spacing={2}>
-            width: {width} ~ height: {height}
-            <Grid container xs={12}>
-                <PlayingCard suite={"diamond"} value={"8"} revealCard={true}/>
-                <PlayingCard suite={"diamond"} value={"10"}revealCard={true}/>
-                <PlayingCard suite={"club"} value={"10"}revealCard={true}/>
-                <PlayingCard suite={"club"} value={"8"}revealCard={true}/>
-
-                <PlayingCard suite={"heart"} value={"10"}revealCard={true}/>
-                <PlayingCard suite={"heart"} value={"8"}revealCard={true}/>
-
-                <PlayingCard suite={"spade"} value={"10"}revealCard={true}/>
-                <PlayingCard suite={"spade"} value={"8"}revealCard={true}/>
+        <Grid container justifyContent="center">
+            <Grid container justifyContent="space-between">
+                <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </Grid>
-            
-
+            <Grid container justifyContent="space-between">
+                <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid container justifyContent="space-between">
+                <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid container justifyContent="space-between">
+                <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid container justifyContent="space-between">
+                <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                        <Grid item>
+                            <PlayingCard suite={"diamond"} value={"8"} revealCard={false}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>        
         </Grid>
     );
 	

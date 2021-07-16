@@ -21,7 +21,9 @@ const ClockSolitare = () => {
           maxWidth: containerWidth,
           maxHeight:containerHeight,
           "background-color": "lightslategray",
-          margin:"auto",
+          marginTop:"45px",
+          marginLeft:"auto",
+          marginRight:"auto",
           overflow:"visible",
         },
         outer: {
@@ -35,6 +37,7 @@ const ClockSolitare = () => {
         title: {
           fontSize: 35,
           textAlign:"center",
+          marginTop:"10px",
         },
         pos: {
           marginBottom: 12,

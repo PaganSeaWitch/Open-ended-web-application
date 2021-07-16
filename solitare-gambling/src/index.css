@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Tangerine');
+
 body {
   margin: 0;
-  font-family: 'Tangerine';
+  font-family: 'DejaVu Serif';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -13,7 +13,10 @@ code {
 
 .card {
   white-space: pre-wrap;
+  font-size: 16px; 
 }
+
 .clock{
   background-color: lightslategray;
+  margin: auto;
 }

@@ -9,11 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}) => {
 
-    useEffect(() => {
-        console.log("_________________________________-")
-        console.log("widthOfPeriod : " + calculateTextWidth(".", "500 normal 16px Dejavu Serif"));
-    })
-    
+
     const linebreak = "\n"
     const diamonds = "♦";
     const spades = "♠";
@@ -30,6 +26,13 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
         return tempHeight
     }
 
+    
+    useEffect(() => {
+        if(revealCard === true){
+            console.log("Reveal card!")
+        }
+    }, [revealCard]);
+
 
     const getCardWidth = () =>{
         const tempWidth = Math.ceil(containerWidth / 10)/2;
@@ -44,9 +47,6 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
     const getMidHeight = () =>{
         return Math.ceil(getCardHeight()/2)
     }
-
-
-
 
 
     const getTopValueCardPart = () =>{

@@ -2,7 +2,7 @@ import React from 'react';
 import {useWindowDimensions} from "./helper-functions.componet"
 import PlayingCard from "./card.component";
 import Grid from '@material-ui/core/Grid';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Countdown from 'react-countdown';
 const ClockSolitare = () => {
@@ -14,10 +14,11 @@ const ClockSolitare = () => {
     const suite2 = "club"
     const suite3 = "heart"
     const suite4 = "spade"
-    const miliSeconds = 30000
+    const miliSeconds = 15000
     const [countdownAPI, setCountdownAPI] = useState()
     const [stateOfGame, setStateOfGame] = useState("continue")
     const [timer, setTimer] = useState(Date.now()+miliSeconds)
+    const [cardsLeft, setCardsLeft] = useState([])
     const [suite1KingValues, setSuite1KingValues] = useState({
         "suite" : "?",
         "value" : "?",
@@ -162,26 +163,35 @@ const ClockSolitare = () => {
 
 
     const getRandomCard = () =>{
-        let suite = getRandomInt(1, 5);
-        let card = getRandomInt(1, 14);
-        let suiteString = getSuite(suite);
-        let isChosenCardVisible = visibleCardDictionary[suiteString][card];
-        while(isChosenCardVisible){
-            suite = getRandomInt(1, 5);
-            card = getRandomInt(1, 14);
-            suiteString = getSuite(suite);
-            isChosenCardVisible = visibleCardDictionary[suiteString][card];
+        let randNum = getRandomInt(0, cardsLeft.length);
+        let gottenString = cardsLeft[randNum];
+        const tempArray = cardsLeft;
+        tempArray.splice(randNum, 1);
+        setCardsLeft(tempArray)
+        console.log(gottenString);
+        if(gottenString.startsWith("diamond")){
+            return {suiteString: "diamond", card: gottenString.substring(7)};
         }
-        return {suiteString, card}
+        if(gottenString.startsWith("club")){
+            return {suiteString: "club", card: gottenString.substring(4)};
+
+        }
+        if(gottenString.startsWith("heart")){
+            return {suiteString: "heard", card: gottenString.substring(5)};
+
+        }
+        if(gottenString.startsWith("spade")){
+            return {suiteString: "space", card: gottenString.substring(5)};
+        }
     }
 
 
     const SimulateRound = () =>{
         let currentValue;
+        let actualSuite;
         let currentKing;
         for(const key in kingValues){
             currentKing = key;
-            let actualSuite;
             switch(currentKing){
                 case(suite1):
                     currentValue = suite1KingValues["value"]
@@ -214,17 +224,17 @@ const ClockSolitare = () => {
                             "reveal": true})
                             break;
                         case(suite2):
-                            setSuite1KingValues({...suite2KingValues,"suite": suite2, 
+                            setSuite2KingValues({...suite2KingValues,"suite": suite2, 
                             "value": "13",
                             "reveal": true})
                             break;
                         case(suite3):
-                            setSuite1KingValues({...suite4KingValues,"suite": suite3, 
+                            setSuite3KingValues({...suite4KingValues,"suite": suite3, 
                             "value": "13",
                             "reveal": true})
                             break;
                         case(suite4):
-                            setSuite1KingValues({...suite4KingValues,"suite": suite4, 
+                            setSuite4KingValues({...suite4KingValues,"suite": suite4, 
                             "value": "13",
                             "reveal": true})
                             break;
@@ -246,8 +256,7 @@ const ClockSolitare = () => {
         }
 
         if(currentValue !== "?"){
-            console.log(currentValue)
-            switch(currentKing){
+            switch(actualSuite){
                 case(suite1):
                     setSuite1Dictionary({...suite1Dictionary, [currentValue]: true })
                     break;
@@ -260,6 +269,9 @@ const ClockSolitare = () => {
                 case(suite4):
                     setSuite4Dictionary({...suite4Dictionary, [currentValue]: true })
                     break;
+                default:
+                    console.log("Defaulted!")
+                    return;
             }
         }
         const newCard = getRandomCard();
@@ -292,28 +304,36 @@ const ClockSolitare = () => {
                 "value": cardObject.value,
                 "reveal": cardObject.reveal})
                 break;
+            default:
+                console.log("Defaulted!")
+                return;
         }
         
 
     }
 
+    const setUpRound =()=>{
+        const tempArray = [];
+        for(const key in visibleCardDictionary){
+            for(let i = 1; i < 14; i++){
+                tempArray.push(key+i);
+            }
+        }
+        setCardsLeft(tempArray)
+    }
 
     useEffect(() => {
-        SimulateRound();
+        setUpRound();
+        //SimulateRound();
     },[])
 
     useEffect(() => {
-        console.log(suite4KingValues)
-        console.log(suite1KingValues)
-        console.log(suite3KingValues)
-        console.log(suite2KingValues)
-    },[suite1KingValues. suite2KingValues, suite3KingValues, suite4KingValues])
-    useEffect(() => {
-        console.log(suite1Dictionary)
-        console.log(suite2Dictionary)
-        console.log(suite3Dictionary)
-        console.log(suite4Dictionary)
-    },[suite1Dictionary. suite2Dictionary, suite3Dictionary, suite4Dictionary])
+        console.log(cardsLeft)
+        if(cardsLeft.length == 52){
+            SimulateRound();
+        }
+    }, [cardsLeft])
+
     // Renderer callback
     const renderer = ({seconds}) => {
         return <span>{seconds} seconds</span>;
@@ -326,6 +346,7 @@ const ClockSolitare = () => {
         }
 
         else if(stateOfGame === "end"){
+            setUpRound();
         }
 
         setTimer(Date.now() + miliSeconds);
@@ -487,13 +508,13 @@ const ClockSolitare = () => {
                                 <PlayingCard suite={suite1KingValues["suite"]} value={suite1KingValues["value"]} revealCard={suite1KingValues["reveal"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={kingValues[suite2][0]} value={kingValues[suite2][1]} revealCard={kingValues[suite2][2]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard suite={suite2KingValues["suite"]} value={suite2KingValues["value"]} revealCard={suite2KingValues["reveal"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={kingValues[suite3][0]} value={kingValues[suite3][1]} revealCard={kingValues[suite3][2]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard suite={suite3KingValues["suite"]} value={suite3KingValues["value"]} revealCard={suite3KingValues["reveal"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={kingValues[suite4][0]} value={kingValues[suite4][1]} revealCard={kingValues[suite4][2]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard suite={suite4KingValues["suite"]} value={suite4KingValues["value"]} revealCard={suite4KingValues["reveal"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                         </Grid>
                     </Grid>

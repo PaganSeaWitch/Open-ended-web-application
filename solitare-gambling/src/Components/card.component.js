@@ -27,11 +27,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
     }
 
     
-    useEffect(() => {
-        if(revealCard === true){
-            console.log("Reveal card!")
-        }
-    }, [revealCard]);
+    
 
 
     const getCardWidth = () =>{

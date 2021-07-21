@@ -17,7 +17,8 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
     const clubs = "♣"; 
     const cardBack = "░";
     const fontString = "500 normal 16px Dejavu Serif"
-    const getCardHeight = () =>{
+    const color = "green";
+    const getCardHeight = () => {
         const tempHeight = Math.ceil(containerHeight / 100)/1.23 ;
         if(tempHeight < 5)
         {
@@ -27,9 +28,6 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
     }
 
     
-    
-
-
     const getCardWidth = () =>{
         const tempWidth = Math.ceil(containerWidth / 10)/2;
         if(tempWidth < 45){
@@ -47,14 +45,14 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
 
     const getTopValueCardPart = () =>{
 
-            return linebreak  + value + ".".repeat(getOptLengthForCardValue() <= 0 ? 1 : getOptLengthForCardValue()) 
+        return linebreak + getRoyalValue() + ".".repeat(getOptLengthForCardValue() <= 0 ? 1 : getOptLengthForCardValue())
 
     }
 
 
     const getBottomValueCardPart = () =>{
 
-        return linebreak+ ".".repeat(getOptLengthForCardValue() <= 0 ? 1 : getOptLengthForCardValue())   + value 
+        return linebreak + ".".repeat(getOptLengthForCardValue() <= 0 ? 1 : getOptLengthForCardValue()) + getRoyalValue()
 
     }
 
@@ -86,6 +84,20 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
     }
     
 
+    const getRoyalValue = () => {
+        switch (value) {
+            case "13":
+                return "K";
+            case "12":
+                return "Q";
+            case "11":
+                return "J";
+            default:
+                return value;
+        }
+    }
+
+
     const getMiddleValueCardPart = () =>{
         let add = 0;
         if(containerWidth >= 1800 && containerWidth <= 2800){
@@ -99,8 +111,6 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
         
         return linebreak  + ".".repeat(getOptLengthForMidSuite() <= 0 ? 1 : getOptLengthForMidSuite()+2) +getSuite() + ".".repeat(getOptLengthForMidSuite()<= 0 ? 1 : getOptLengthForMidSuite()+1) 
     }
-
-
 
 
     const getTopSuiteCardPart = () =>{
@@ -163,6 +173,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
         return periodAmount -1;
     }
 
+
     const getOptWidthForCardSuiteRight = () =>{
         const widthOfLine = getCardWidth()
         let periodAmount = 0;
@@ -178,6 +189,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
         }
         return periodAmount -1;
     }
+
 
     const getOptLengthForCardValue = () =>{
         const widthOfLine = getCardWidth()
@@ -216,6 +228,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
         return periodAmount -1;
     }
 
+
     const revealCardValue = () =>{
         return  (getTopValueCardPart()
         + getTopSuiteCardPart()
@@ -231,6 +244,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
         return  getCardBackMiddle().repeat(getCardHeight() <= 0 ? 1: getCardHeight())
     }
 
+
     const getAdjustment = (cardWidth) =>{
         const base = 10;
         return Math.ceil(cardWidth/10) + 1;
@@ -244,11 +258,11 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
 
     const useStyles = makeStyles({
         root: {
-          maxWidth: cardWidth+ adjustment,
-          maxHeight: cardHeight *32.5,
-          "white-space": "pre-wrap",
-          "background-color": "white",
-          "color" : "red",
+            maxWidth: cardWidth + adjustment,
+            maxHeight: cardHeight * 32.5,
+            "white-space": "pre-wrap",
+            "background-color": "white",
+            "color": (suite === 'club' || suite === 'spade' ? "red" : "black"),
         },
         content: {
           display: 'inline-block',

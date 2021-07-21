@@ -169,19 +169,19 @@ const ClockSolitare = () => {
         tempArray.splice(randNum, 1);
         setCardsLeft(tempArray)
         console.log(gottenString);
-        if(gottenString.startsWith("diamond")){
-            return {suiteString: "diamond", card: gottenString.substring(7)};
+        if(gottenString.startsWith(suite1)){
+            return {suiteString: suite1, card: gottenString.substring(7)};
         }
-        if(gottenString.startsWith("club")){
-            return {suiteString: "club", card: gottenString.substring(4)};
+        if(gottenString.startsWith(suite2)){
+            return {suiteString: suite2, card: gottenString.substring(4)};
 
         }
-        if(gottenString.startsWith("heart")){
-            return {suiteString: "heard", card: gottenString.substring(5)};
+        if(gottenString.startsWith(suite3)){
+            return {suiteString: suite3, card: gottenString.substring(5)};
 
         }
-        if(gottenString.startsWith("spade")){
-            return {suiteString: "space", card: gottenString.substring(5)};
+        if(gottenString.startsWith(suite4)){
+            return {suiteString: suite4, card: gottenString.substring(5)};
         }
     }
 
@@ -322,14 +322,106 @@ const ClockSolitare = () => {
         setCardsLeft(tempArray)
     }
 
+    const resetValues = ()=>{
+        setSuite1KingValues({...suite1KingValues,"suite": "?", 
+                "value": "?",
+                "reveal": false})
+        setSuite2KingValues({...suite2KingValues,"suite": "?", 
+            "value": "?",
+            "reveal": false})
+        setSuite3KingValues({...suite3KingValues,"suite": "?", 
+            "value": "?",
+            "reveal": false})
+        setSuite4KingValues({...suite4KingValues,"suite": "?", 
+            "value": "?",
+            "reveal": false})
+        setSuite1Dictionary({...suite1Dictionary,
+            "1" : false,
+            "2" : false,
+            "3" : false,
+            "4" : false,
+            "5" : false,
+            "6" : false,
+            "7" : false,
+            "8" : false,
+            "9" : false,
+            "10": false,
+            "11": false,
+            "12": false,
+            "13": false
+        })
+        setSuite2Dictionary({...suite2Dictionary,
+            "1" : false,
+            "2" : false,
+            "3" : false,
+            "4" : false,
+            "5" : false,
+            "6" : false,
+            "7" : false,
+            "8" : false,
+            "9" : false,
+            "10": false,
+            "11": false,
+            "12": false,
+            "13": false
+        })
+        setSuite3Dictionary({...suite3Dictionary,
+            "1" : false,
+            "2" : false,
+            "3" : false,
+            "4" : false,
+            "5" : false,
+            "6" : false,
+            "7" : false,
+            "8" : false,
+            "9" : false,
+            "10": false,
+            "11": false,
+            "12": false,
+            "13": false
+        })
+        setSuite4Dictionary({...suite4Dictionary,
+            "1" : false,
+            "2" : false,
+            "3" : false,
+            "4" : false,
+            "5" : false,
+            "6" : false,
+            "7" : false,
+            "8" : false,
+            "9" : false,
+            "10": false,
+            "11": false,
+            "12": false,
+            "13": false
+        })
+        setStateOfGame("continue");
+    }
+
+
+    const doNextAction = () =>{
+        if(stateOfGame === "continue"){
+            SimulateRound();
+        }
+
+        else if(stateOfGame === "end"){
+            setUpRound();
+            resetValues();
+        }
+
+        setTimer(Date.now() + miliSeconds);
+        
+    }
+
+
+
     useEffect(() => {
         setUpRound();
-        //SimulateRound();
     },[])
 
     useEffect(() => {
         console.log(cardsLeft)
-        if(cardsLeft.length == 52){
+        if(cardsLeft.length === 52){
             SimulateRound();
         }
     }, [cardsLeft])
@@ -340,19 +432,9 @@ const ClockSolitare = () => {
     };
 
 
-    const doNextAction = () =>{
-        if(stateOfGame === "continue"){
-            SimulateRound();
-        }
+    
 
-        else if(stateOfGame === "end"){
-            setUpRound();
-        }
-
-        setTimer(Date.now() + miliSeconds);
-        
-    }
-
+    
 
     useEffect(() => {
         if(countdownAPI != null){

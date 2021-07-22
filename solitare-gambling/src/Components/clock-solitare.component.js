@@ -428,7 +428,11 @@ const ClockSolitare = () => {
 
     // Renderer callback
     const renderer = ({seconds}) => {
-        return <span>{seconds} seconds</span>;
+        if(stateOfGame === "end"){
+            return <span>Next Game Begins in: {seconds} seconds</span>;
+
+        }
+        return <span>Next Move Begins in: {seconds} seconds</span>;
     };
 
 
@@ -619,7 +623,7 @@ const ClockSolitare = () => {
                 </Grid>
                 <br/>
                 <header className={classes.title}>
-                Next Move Begins IN: <Countdown date={timer} ref={setRef} renderer={renderer} onComplete={doNextAction} />
+                 <Countdown date={timer} ref={setRef} renderer={renderer} onComplete={doNextAction} />
                 </header>
                 
                 <Grid container justifyContent="space-between">

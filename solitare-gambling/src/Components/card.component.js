@@ -5,7 +5,7 @@ import calculateTextWidth from "calculate-text-width"
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
-
+import { shadows } from '@material-ui/system';
 
 const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}) => {
 
@@ -261,8 +261,8 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
             maxWidth: cardWidth + adjustment,
             maxHeight: cardHeight * 32.5,
             "white-space": "pre-wrap",
-            "background-color": "white",
-            "color": (suite === 'club' || suite === 'spade' ? "red" : "black"),
+            "background-color": "#f0f4ff",
+            "color": (revealCard ? (suite === 'club' || suite === 'spade' ? "black" : "red"): "#d918ff"),
         },
         content: {
           display: 'inline-block',
@@ -276,7 +276,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
       const classes = useStyles();
 
     return (
-        <Card className ={classes.root} variant="outlined"  >  
+        <Card raised={true} className ={classes.root}>  
             <CardContent className = {classes.content}> 
                 
                 {revealCard ? revealCardValue(): consealCardValue()}

@@ -255,6 +255,7 @@ const ClockSolitare = () => {
             return;
         }
 
+
         if(currentValue !== "?"){
             switch(actualSuite){
                 case(suite1):
@@ -282,6 +283,7 @@ const ClockSolitare = () => {
             "suite" : newCard.suiteString, 
             "value" : cardString,
             "reveal": true }
+
 
         switch(currentKing){
             case(suite1):
@@ -312,6 +314,7 @@ const ClockSolitare = () => {
 
     }
 
+
     const setUpRound =()=>{
         const tempArray = [];
         for(const key in visibleCardDictionary){
@@ -321,6 +324,7 @@ const ClockSolitare = () => {
         }
         setCardsLeft(tempArray)
     }
+
 
     const resetValues = ()=>{
         setSuite1KingValues({...suite1KingValues,"suite": "?", 
@@ -414,10 +418,10 @@ const ClockSolitare = () => {
     }
 
 
-
     useEffect(() => {
         setUpRound();
     },[])
+
 
     useEffect(() => {
         console.log(cardsLeft)
@@ -426,25 +430,23 @@ const ClockSolitare = () => {
         }
     }, [cardsLeft])
 
+
     // Renderer callback
     const renderer = ({seconds}) => {
         if(stateOfGame === "end"){
             return <span>Next Game Begins in: {seconds} seconds</span>;
-
         }
         return <span>Next Move Begins in: {seconds} seconds</span>;
     };
 
-
-    
-
-    
 
     useEffect(() => {
         if(countdownAPI != null){
             countdownAPI.start();
         }
     }, [timer])
+
+
 
     const useStyles = makeStyles({
         root: {

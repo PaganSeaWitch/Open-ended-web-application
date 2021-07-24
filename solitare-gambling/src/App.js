@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import ClockSolitare from "./Components/clock-solitare.component";
-
+import Agnes from "./Components/agnes.component";
 const App = () => {
 
     return (
@@ -20,7 +20,12 @@ const App = () => {
         )}
         />
         
-        
+        <Route path="/agnes" exact render={(props) => (
+            <>
+                {<Agnes/>}
+            </>
+        )}
+        />
         
         </Router>
     );

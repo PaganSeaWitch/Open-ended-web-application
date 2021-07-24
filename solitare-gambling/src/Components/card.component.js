@@ -1,11 +1,9 @@
 import React from 'react';
-import {useWindowDimensions} from "./helper-functions.componet"
-import { useEffect } from 'react';
 import calculateTextWidth from "calculate-text-width"
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
-import { shadows } from '@material-ui/system';
+
 
 const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}) => {
 

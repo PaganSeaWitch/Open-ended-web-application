@@ -30,3 +30,8 @@ code {
   margin: auto;
   user-select: none;
 }
+
+.block{
+  display: block;
+  position: relative;
+}

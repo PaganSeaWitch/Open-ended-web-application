@@ -3,9 +3,11 @@ import calculateTextWidth from "calculate-text-width"
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
+import { fontString, getCardHeight, getCardWidth, getAdjustment} from './card-helper-functions.component';
 
 
-const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}) => {
+const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight, stack}) => {
+    //const fontString = "500 normal 16px Dejavu Serif"
 
 
     const linebreak = "\n"
@@ -14,30 +16,12 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
     const hearts = "♥";
     const clubs = "♣"; 
     const cardBack = "░";
-    const fontString = "500 normal 16px Dejavu Serif"
     const color = "green";
-    const getCardHeight = () => {
-        const tempHeight = Math.ceil(containerHeight / 100)/1.23 ;
-        if(tempHeight < 5)
-        {
-            return 5
-        }
-        return tempHeight
-    }
-
     
-    const getCardWidth = () =>{
-        const tempWidth = Math.ceil(containerWidth / 10)/2;
-        if(tempWidth < 45){
-            return 45
-        }
-
-        return tempWidth
-    }
 
 
     const getMidHeight = () =>{
-        return Math.ceil(getCardHeight()/2)
+        return Math.ceil(cardHeight/2)
     }
 
 
@@ -118,7 +102,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
 
 
     const getBottomSuiteCardPart = () =>{
-        return linebreak   + ".".repeat(getOptWidthForCardSuiteRight() <= 0 ? 1 : getOptLengthForCardSuite()) + getSuite() 
+        return linebreak   + ".".repeat(getOptWidthForCardSuiteRight() <= 0 ? 1 : getOptWidthForCardSuiteRight()) + getSuite() 
 
     }
 
@@ -126,7 +110,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
     const getOptLengthForMidSuite = () =>{
         
         let periodAmount = 0;
-        const widthOfLine = getCardWidth()
+        const widthOfLine = cardWidth
 
         let widthOfCard = calculateTextWidth(".".repeat(periodAmount) +getSuite() + ".".repeat(periodAmount),fontString )
         
@@ -141,7 +125,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
 
 
     const getOptLengthForMid = () =>{
-        const widthOfLine = getCardWidth()
+        const widthOfLine = cardWidth
         let periodAmount = 0;
         let widthOfCard =calculateTextWidth(".".repeat(periodAmount),fontString)
 
@@ -157,7 +141,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
 
 
     const getOptLengthForCardSuite = () =>{
-        const widthOfLine = getCardWidth()
+        const widthOfLine = cardWidth
         let periodAmount = 0;
         let widthOfCard  =  calculateTextWidth(getSuite() + ".".repeat(periodAmount),fontString);
 
@@ -173,12 +157,11 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
 
 
     const getOptWidthForCardSuiteRight = () =>{
-        const widthOfLine = getCardWidth()
+        const widthOfLine = cardWidth
         let periodAmount = 0;
         const suite = getSuite();
         let widthOfCard  =  calculateTextWidth(".".repeat(periodAmount)+suite ,fontString);
 
-        console.log(widthOfCard)
         while (widthOfCard < widthOfLine) {
             periodAmount++;
             let string =  ".".repeat(periodAmount) +suite
@@ -190,16 +173,19 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
 
 
     const getOptLengthForCardValue = () =>{
-        const widthOfLine = getCardWidth()
+        const widthOfLine = cardWidth
         let periodAmount = 0;
-        let widthOfCard  =  calculateTextWidth(value + ".".repeat(periodAmount),fontString );
+        let widthOfCard  =  calculateTextWidth(getRoyalValue() + ".".repeat(periodAmount),fontString );
 
 
         while (widthOfCard < widthOfLine) {
             periodAmount++;
-            let string =  value + ".".repeat(periodAmount)   
+            let string =  getRoyalValue() + ".".repeat(periodAmount)   
             widthOfCard = calculateTextWidth(string,fontString)
             
+        }
+        if(value > 10){
+            return periodAmount-3;
         }
         return periodAmount-1;
     }
@@ -212,7 +198,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
 
 
     const getOptLengthForCardBackMiddle = () =>{
-        const widthOfLine = getCardWidth()
+        const widthOfLine = cardWidth
         let periodAmount = 0;
         let widthOfCard =calculateTextWidth(cardBack.repeat(periodAmount),fontString )
 
@@ -239,20 +225,20 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
 
 
     const consealCardValue = () =>{
-        return  getCardBackMiddle().repeat(getCardHeight() <= 0 ? 1: getCardHeight())
+        return  getCardBackMiddle().repeat(cardHeight <= 0 ? 1: cardHeight)
     }
 
 
-    const getAdjustment = (cardWidth) =>{
-        const base = 10;
-        return Math.ceil(cardWidth/10) + 1;
-        
-    }
-
-    const cardWidth = getCardWidth()
-    const cardHeight = getCardHeight();
+    const cardWidth = getCardWidth(containerWidth);
+    const cardHeight = getCardHeight(containerHeight);
 
     const adjustment = getAdjustment(cardWidth);
+
+    const moveUpBy = () =>{
+        const marginTop=  -19 * (cardHeight -2) +"px"
+        console.log(marginTop);
+        return marginTop;
+    }
 
     const useStyles = makeStyles({
         root: {
@@ -260,7 +246,13 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight}
             maxHeight: cardHeight * 32.5,
             "white-space": "pre-wrap",
             "background-color": "#f0f4ff",
+            display: 'block',
             "color": (revealCard ? (suite === 'club' || suite === 'spade' ? "black" : "red"): "#d918ff"),
+            marginLeft: "auto",
+            marginRight: "auto",
+            marginTop: ( stack ? moveUpBy : "auto"),
+            marginBottom: "auto",
+
         },
         content: {
           display: 'inline-block',

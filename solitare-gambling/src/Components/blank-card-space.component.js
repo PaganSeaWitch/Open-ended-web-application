@@ -49,7 +49,6 @@ const BlankCardSpace = ({containerWidth, containerHeight}) => {
         content: {
           maxWidth: cardWidth + adjustment,
           maxHeight: cardHeight * 32.5,
-          display: 'inline-block',
           margin: "-25px -10px -16px -6px",
           textAlign:"center",
           fontsize: 16,
@@ -60,7 +59,7 @@ const BlankCardSpace = ({containerWidth, containerHeight}) => {
       const classes = useStyles();
 
     return (
-        <Card raised={true} className ={classes.root} variant={"outlined"}>
+        <Card className ={classes.root} variant={"outlined"}>
             <CardContent className = {classes.content}> 
                 {blankHeight()}
             </CardContent>

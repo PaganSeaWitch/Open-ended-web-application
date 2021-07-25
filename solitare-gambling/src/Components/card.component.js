@@ -234,10 +234,16 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight,
 
     const adjustment = getAdjustment(cardWidth);
 
-    const moveUpBy = () =>{
-        const marginTop=  -19 * (cardHeight -2) +"px"
-        console.log(marginTop);
-        return marginTop;
+    const moveUpBy = (thisMuch) =>{
+        if(thisMuch === "part"){
+            const marginTop=  -19 * (cardHeight -2) +"px"
+            return marginTop;
+        }
+        else{
+            console.log("moving UP Completely")
+            const marginTop=  -22.6 * (cardHeight -2) +"px"
+            return marginTop;
+        }
     }
 
     const useStyles = makeStyles({
@@ -250,7 +256,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight,
             "color": (revealCard ? (suite === 'club' || suite === 'spade' ? "black" : "red"): "#d918ff"),
             marginLeft: "auto",
             marginRight: "auto",
-            marginTop: ( stack ? moveUpBy : "auto"),
+            marginTop: ( typeof(stack) !== 'undefined'? (stack === "first" ? moveUpBy("whole"): moveUpBy("part")) : "auto"),
             marginBottom: "auto",
 
         },

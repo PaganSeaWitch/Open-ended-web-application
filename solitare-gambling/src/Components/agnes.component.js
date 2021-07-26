@@ -8,6 +8,13 @@ import InvisibleCard from "./invisible-card.component";
 import PlayingCards from "./cards.component";
 const Agnes = () =>{
 
+    const pile1 = "first";
+    const pile2 = "second";
+    const pile3 = "third";
+    const pile4 = "fourth";
+    const pile5 = "fifth";
+    const pile6 = "sixth";
+    const pile7 = "seventh";
     const { height, width } = useWindowDimensions();
     const containerHeight = height 
     const containerWidth = width  - 300
@@ -25,12 +32,10 @@ const Agnes = () =>{
     const currentLeadingValue ="11";
 
     const firstPile = [{},{suite:"diamond", value:"5", revealCard:true, draggable:true}];
-    const firstPileDraggable = [{suite:"diamond", value:"5", revealCard:true}];
 
     const secondPile = [{},{suite:"spade", value:"2", revealCard:false},{suite:"club", value:"2", revealCard:true, draggable:true}];
 
     const thirdPile = [{},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:true, draggable:true}];
-    const thirdPileDraggable = [{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:true}];
 
     const fourthPile = [{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:true, draggable:true}];
 
@@ -41,9 +46,45 @@ const Agnes = () =>{
     const seventhPile = [{},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:true, draggable:true}];
 
 
-    const topCardStopHandler = (position) =>{
-        console.log(position)
-        setPosition({x:0,y:0})
+
+    const pileDictionary = {
+        [pile1] : firstPile,
+        [pile2] : secondPile,
+        [pile3] : thirdPile,
+        [pile4] : fourthPile,
+        [pile5] : fifthPile,
+        [pile6] : sixthPile,
+        [pile7] : seventhPile,
+    }
+
+    
+    const topCardStopHandler = (data, cardPosition) =>{
+        console.log(data)
+        switch(cardPosition.pileName){
+            case(pile1):
+                console.log("gotten first pile")
+                break;
+            case(pile2):
+                console.log("gotten second pile")
+                break;
+            case(pile3):
+                console.log("gotten third pile")
+                break;
+            case(pile4):
+                console.log("gotten fourth pile")
+                break;
+            case(pile5):
+                console.log("gotten fifth pile")
+                break;
+            case(pile6):
+                console.log("gotten sixth pile")
+                break;
+            case(pile7):
+                console.log("gotten seventh pile")
+                break;
+            default:
+                return;
+        }
     }
 
     return (
@@ -52,39 +93,39 @@ const Agnes = () =>{
                     
             <Grid container justifyContent="center" spacing={5}>
                 <Grid item>
-                    <PlayingCard suite={"diamond"} value={currentLeadingValue} revealCard={true} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                    <PlayingCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                 </Grid>
                 <Grid item>
-                    <DraggableCard suite={"club"} value={"11"} revealCard={true} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={topCardStopHandler} />
+                    <DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={topCardStopHandler} />
                     <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>
                 </Grid>
                 <Grid item>
                     <InvisibleCard containerHeight={containerHeight} containerWidth={containerWidth}/>
                 </Grid>
                 <Grid item>
-                    {cardInFirstFoundation ?<DraggableCard suite={"club"} value={"11"} revealCard={true} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={topCardStopHandler} />
+                    {cardInFirstFoundation ?<DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={topCardStopHandler} />
                         : <></>}
-                    {firstFoundation.length > 1 ?<PlayingCard suite={"club"} value={"11"} revealCard={true} containerHeight={containerHeight} containerWidth={containerWidth} />
+                    {firstFoundation.length > 1 ?<PlayingCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} />
                         : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                 </Grid>
                 <Grid item>
-                    {cardInSecondFoundation ?<DraggableCard suite={"club"} value={"11"} revealCard={true} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={topCardStopHandler} />
+                    {cardInSecondFoundation ?<DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={topCardStopHandler} />
                         : <></>}
-                    {secondFoundation.length > 1 ?<PlayingCard suite={"club"} value={"11"} revealCard={true} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                    {secondFoundation.length > 1 ?<PlayingCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                         : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                 </Grid>
                 <Grid item>
                     
-                    {cardInThirdFoundation ?<DraggableCard suite={"club"} value={"11"} revealCard={true} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={topCardStopHandler} />
+                    {cardInThirdFoundation ?<DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={topCardStopHandler} />
                         : <></>}
-                    {thirdFoundation.length > 1 ?<PlayingCard suite={"club"} value={"11"} revealCard={true} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                    {thirdFoundation.length > 1 ?<PlayingCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                         : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                     
                 </Grid>
                 <Grid item>
-                    {cardInFourthFoundation ?<DraggableCard suite={"club"} value={"11"} revealCard={true} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={topCardStopHandler} />
+                    {cardInFourthFoundation ?<DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={topCardStopHandler} />
                         : <></>}
-                    {fourthFoundation.length > 1 ?<PlayingCard suite={"club"} value={"9"} revealCard={true} containerHeight={containerHeight} containerWidth={containerWidth} />
+                    {fourthFoundation.length > 1 ?<PlayingCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} />
                         : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                 </Grid>
             </Grid>
@@ -93,40 +134,40 @@ const Agnes = () =>{
             <Grid container justifyContent={"center"} spacing={5}>
                 <Grid item>
 
-                    {firstPile.length > 0 ?<PlayingCards cards={firstPile} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
-                            : <></>}
+                    {firstPile.length > 0 ?<PlayingCards   cards={firstPile}    currentPile={pile1} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
+                            : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                     
                 </Grid>
                 <Grid item>
 
-                {secondPile.length > 0 ?<PlayingCards cards={secondPile} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
-                            : <></>}
+                    {secondPile.length > 0 ? <PlayingCards  cards={secondPile}  currentPile={pile2} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
+                            : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                         
                 </Grid>
                 <Grid item>
-                    {thirdPile.length > 0 ?<PlayingCards cards={thirdPile} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
-                            : <></>}
+                    {thirdPile.length > 0 ?< PlayingCards   cards={thirdPile}   currentPile={pile3} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
+                            : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                     
                     
                 </Grid>
                 <Grid item>
-                {fourthPile.length > 0 ?<PlayingCards cards={fourthPile} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
-                            : <></>}
+                    {fourthPile.length > 0 ? <PlayingCards  cards={fourthPile}  currentPile={pile4} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
+                            : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                     
                 </Grid>
                 <Grid item>
-                {fifthPile.length > 0 ?<PlayingCards cards={fifthPile} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
-                            : <></>}
+                    {fifthPile.length > 0 ? <PlayingCards   cards={fifthPile}   currentPile={pile5} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
+                            : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                    
                 </Grid>
                 <Grid item>
-                {sixthPile.length > 0 ?<PlayingCards cards={sixthPile} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
-                            : <></>}
+                    {sixthPile.length > 0 ?   <PlayingCards cards={sixthPile}   currentPile={pile6} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
+                            : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                     
                 </Grid>
                 <Grid item>
-                {seventhPile.length > 0 ?<PlayingCards cards={seventhPile} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
-                            : <></>}
+                    {seventhPile.length > 0 ? <PlayingCards cards={seventhPile} currentPile={pile7} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={topCardStopHandler} />
+                            : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                    
                 </Grid>
             </Grid>

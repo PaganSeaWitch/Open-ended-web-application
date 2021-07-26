@@ -4,9 +4,8 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import { fontString, getCardHeight, getCardWidth, getAdjustment} from './card-helper-functions.component';
-
-
-const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight, stack}) => {
+import { useEffect } from 'react';
+const PlayingCard = ({card, containerWidth, containerHeight, stack}) => {
     //const fontString = "500 normal 16px Dejavu Serif"
 
 
@@ -16,8 +15,10 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight,
     const hearts = "♥";
     const clubs = "♣"; 
     const cardBack = "░";
-    const color = "green";
     
+    useEffect(() => {
+        console.log(card)
+    }, [])
 
 
     const getMidHeight = () =>{
@@ -46,7 +47,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight,
 
 
     const getSuite = () =>{
-        switch(suite) {
+        switch(card.suite) {
             case "diamond":
               return diamonds
             
@@ -67,7 +68,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight,
     
 
     const getRoyalValue = () => {
-        switch (value) {
+        switch (card.value) {
             case "13":
                 return "K";
             case "12":
@@ -75,22 +76,12 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight,
             case "11":
                 return "J";
             default:
-                return value;
+                return card.value;
         }
     }
 
 
     const getMiddleValueCardPart = () =>{
-        let add = 0;
-        if(containerWidth >= 1800 && containerWidth <= 2800){
-            add++;
-
-        }
-        if(containerWidth > 1500 && containerWidth < 1800)
-        {
-            add--;
-        }
-        
         return linebreak  + ".".repeat(getOptLengthForMidSuite() <= 0 ? 1 : getOptLengthForMidSuite()+2) +getSuite() + ".".repeat(getOptLengthForMidSuite()<= 0 ? 1 : getOptLengthForMidSuite()+1) 
     }
 
@@ -184,7 +175,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight,
             widthOfCard = calculateTextWidth(string,fontString)
             
         }
-        if(value > 10){
+        if(card.value > 10){
             return periodAmount-3;
         }
         return periodAmount-1;
@@ -253,7 +244,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight,
             "white-space": "pre-wrap",
             "background-color": "#f0f4ff",
             display: 'block',
-            "color": (revealCard ? (suite === 'club' || suite === 'spade' ? "black" : "red"): "#d918ff"),
+            "color": (card.revealCard ? (card.suite === 'club' || card.suite === 'spade' ? "black" : "red"): "#d918ff"),
             marginLeft: "auto",
             marginRight: "auto",
             marginTop: ( typeof(stack) !== 'undefined'? (stack === "first" ? moveUpBy("whole"): moveUpBy("part")) : "auto"),
@@ -275,7 +266,7 @@ const PlayingCard = ({suite, value, revealCard, containerWidth, containerHeight,
         <Card raised={true} className ={classes.root}>  
             <CardContent className = {classes.content}> 
                 
-                {revealCard ? revealCardValue(): consealCardValue()}
+                {card.revealCard ? revealCardValue(): consealCardValue()}
                 
             </CardContent>
         </Card>

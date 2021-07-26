@@ -1,9 +1,8 @@
 import PlayingCard from "./card.component";
-import {useWindowDimensions} from "./helper-functions.componet"
 import { useState } from "react";
 import Draggable from 'react-draggable';
 import { makeStyles } from '@material-ui/core/styles';
-const DraggableCard = ({suite, value, revealCard, containerWidth, containerHeight, stopHandler, currentPos, stack}) =>{
+const DraggableCard = ({key, card, currentPile, containerWidth, containerHeight, stopHandler, currentPos, stack}) =>{
 
     const [zIndex, setZIndex] = useState(0)
 
@@ -31,9 +30,9 @@ const DraggableCard = ({suite, value, revealCard, containerWidth, containerHeigh
 
     const classes = useStyles();
     return (
-        <Draggable  position={{x:currentPos.x, y:currentPos.y}}onStop={(e,position) =>{typeof(stopHandler) !== 'undefined' ? stopHandler(position) : defaaultStopHandler(); updateZValue();}} onStart={() =>updateZValue()}>
+        <Draggable  position={{x:currentPos.x, y:currentPos.y}}onStop={(e,data) =>{typeof(stopHandler) !== 'undefined' ? stopHandler(data, {index: key,pileName:currentPile}) : defaaultStopHandler(); updateZValue();}} onStart={() =>updateZValue()}>
             <div className={classes.box}>
-                <PlayingCard suite={suite} value={value} revealCard={revealCard} containerHeight={containerHeight} containerWidth={containerWidth} stack={stack}/>
+                <PlayingCard card={card} containerHeight={containerHeight} containerWidth={containerWidth} stack={stack}/>
             </div>    
         </Draggable>
         );

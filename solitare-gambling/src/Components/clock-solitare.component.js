@@ -19,6 +19,7 @@ const ClockSolitare = () => {
     const [stateOfGame, setStateOfGame] = useState("continue")
     const [timer, setTimer] = useState(Date.now()+miliSeconds)
     const [cardsLeft, setCardsLeft] = useState([])
+    
     const [suite1KingValues, setSuite1KingValues] = useState({
         "suite" : "?",
         "value" : "?",
@@ -47,7 +48,7 @@ const ClockSolitare = () => {
     })
 
 
-    const [kingValues, setKingValues] = useState({
+    const [kingValues] = useState({
         [suite1] : suite1KingValues,
         [suite2]: suite2KingValues,
         [suite3]: suite3KingValues,
@@ -123,7 +124,7 @@ const ClockSolitare = () => {
     })
 
 
-    const [visibleCardDictionary,setVisibleCardDictionary] = useState({
+    const [visibleCardDictionary] = useState({
         [suite1] : suite1Dictionary,
         [suite2] : suite2Dictionary,
         [suite3] : suite3Dictionary,
@@ -131,21 +132,6 @@ const ClockSolitare = () => {
     });
 
 
-    const getSuite = (num) =>{
-        switch(num){
-            case(1):
-                return suite1
-            case(2):
-                return suite2
-            case(3):
-                return suite3
-            case(4):
-                return suite4
-            default:
-                return "?"
-
-        }
-    }
 
 
     function getRandomInt(min, max) {
@@ -208,6 +194,10 @@ const ClockSolitare = () => {
                 case(suite4):
                     currentValue = suite4KingValues["value"]
                     actualSuite = suite4KingValues["suite"]
+                    break;
+                default:
+                    currentValue = "?"
+                    actualSuite ="?"
                     break;
             }
             console.log(currentValue)
@@ -490,48 +480,48 @@ const ClockSolitare = () => {
                     <Grid item>
                         <Grid container justifyContent="center" spacing={2}>
                             <Grid item>
-                                <PlayingCard suite={suite1} value={"11"} revealCard={suite1Dictionary["11"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite1, value:"11", revealCard:suite1Dictionary["11"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite2} value={"11"} revealCard={suite2Dictionary["11"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite2, value:"11", revealCard:suite2Dictionary["11"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite3} value={"11"} revealCard={suite3Dictionary["11"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite3, value:"11", revealCard:suite3Dictionary["11"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite4} value={"11"} revealCard={suite4Dictionary["11"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item>
-                        <Grid container justifyContent="center" spacing={2}>
-                            <Grid item>
-                                <PlayingCard suite={suite1} value={"12"} revealCard={suite1Dictionary["12"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
-                            </Grid>
-                            <Grid item>
-                                <PlayingCard suite={suite2} value={"12"} revealCard={suite2Dictionary["12"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
-                            </Grid>
-                            <Grid item>
-                                <PlayingCard suite={suite3} value={"12"} revealCard={suite3Dictionary["12"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
-                            </Grid>
-                            <Grid item>
-                                <PlayingCard suite={suite4} value={"12"} revealCard={suite4Dictionary["12"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite4, value:"11", revealCard:suite4Dictionary["11"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item>
                         <Grid container justifyContent="center" spacing={2}>
                             <Grid item>
-                                <PlayingCard suite={suite1} value={"1"} revealCard={suite1Dictionary["1"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite1, value:"12", revealCard:suite1Dictionary["12"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite2} value={"1"} revealCard={suite2Dictionary["1"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite2, value:"12", revealCard:suite2Dictionary["12"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite3} value={"1"} revealCard={suite3Dictionary["1"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite3, value:"12", revealCard:suite3Dictionary["12"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite4} value={"1"} revealCard={suite4Dictionary["1"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite4, value:"12", revealCard:suite4Dictionary["12"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item>
+                        <Grid container justifyContent="center" spacing={2}>
+                            <Grid item>
+                                <PlayingCard card={{suite:suite1, value:"1", revealCard:suite1Dictionary["1"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                            </Grid>
+                            <Grid item>
+                                <PlayingCard card={{suite:suite2, value:"1", revealCard:suite2Dictionary["1"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                            </Grid>
+                            <Grid item>
+                                <PlayingCard card={{suite:suite3, value:"1", revealCard:suite3Dictionary["1"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                            </Grid>
+                            <Grid item>
+                                <PlayingCard card={{suite:suite4, value:"1", revealCard:suite4Dictionary["1"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -541,32 +531,32 @@ const ClockSolitare = () => {
                     <Grid item>
                         <Grid container justifyContent="center" spacing={2}>
                             <Grid item>
-                                <PlayingCard suite={suite1} value={"10"} revealCard={suite1Dictionary["10"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite1, value:"10", revealCard:suite1Dictionary["10"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite2} value={"10"} revealCard={suite2Dictionary["10"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite2, value:"10", revealCard:suite2Dictionary["10"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite3} value={"10"} revealCard={suite3Dictionary["10"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite3, value:"10", revealCard:suite3Dictionary["10"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite4} value={"10"} revealCard={suite4Dictionary["10"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite4, value:"10", revealCard:suite4Dictionary["10"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item>
                         <Grid container justifyContent="center" spacing={2}>
                             <Grid item>
-                                <PlayingCard suite={suite1} value={"2"} revealCard={suite1Dictionary["2"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite1, value:"2", revealCard:suite1Dictionary["2"]}}containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite2} value={"2"} revealCard={suite2Dictionary["2"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite2, value:"2", revealCard:suite2Dictionary["2"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite3} value={"2"} revealCard={suite3Dictionary["2"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite3, value:"2", revealCard:suite3Dictionary["2"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite4} value={"2"} revealCard={suite4Dictionary["2"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite4, value:"2", revealCard:suite4Dictionary["2"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -577,48 +567,48 @@ const ClockSolitare = () => {
                     <Grid item>
                         <Grid container justifyContent="center" spacing={2}>
                             <Grid item>
-                                <PlayingCard suite={suite1} value={"9"} revealCard={suite1Dictionary["9"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite1, value:"9", revealCard:suite1Dictionary["9"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite2} value={"9"} revealCard={suite2Dictionary["9"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite2, value:"9", revealCard:suite2Dictionary["9"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite3} value={"9"} revealCard={suite3Dictionary["9"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite3, value:"9", revealCard:suite3Dictionary["9"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite4} value={"9"} revealCard={suite4Dictionary["9"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item>
-                        <Grid container justifyContent="center" spacing={2}>
-                            <Grid item>
-                                <PlayingCard suite={suite1KingValues["suite"]} value={suite1KingValues["value"]} revealCard={suite1KingValues["reveal"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
-                            </Grid>
-                            <Grid item>
-                                <PlayingCard suite={suite2KingValues["suite"]} value={suite2KingValues["value"]} revealCard={suite2KingValues["reveal"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
-                            </Grid>
-                            <Grid item>
-                                <PlayingCard suite={suite3KingValues["suite"]} value={suite3KingValues["value"]} revealCard={suite3KingValues["reveal"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
-                            </Grid>
-                            <Grid item>
-                                <PlayingCard suite={suite4KingValues["suite"]} value={suite4KingValues["value"]} revealCard={suite4KingValues["reveal"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite4, value:"9", revealCard:suite4Dictionary["9"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item>
                         <Grid container justifyContent="center" spacing={2}>
                             <Grid item>
-                                <PlayingCard suite={suite1} value={"3"} revealCard={suite1Dictionary["3"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite1KingValues["suite"],value:suite1KingValues["value"],revealCard:suite1KingValues["reveal"]}}  containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite2} value={"3"} revealCard={suite2Dictionary["3"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite2KingValues["suite"],value:suite2KingValues["value"],revealCard:suite2KingValues["reveal"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite3} value={"3"} revealCard={suite3Dictionary["3"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite3KingValues["suite"],value:suite3KingValues["value"],revealCard:suite3KingValues["reveal"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite4} value={"3"} revealCard={suite4Dictionary["3"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite4KingValues["suite"],value:suite4KingValues["value"],revealCard:suite4KingValues["reveal"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item>
+                        <Grid container justifyContent="center" spacing={2}>
+                            <Grid item>
+                                <PlayingCard card={{suite:suite1, value:"3", revealCard:suite1Dictionary["3"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                            </Grid>
+                            <Grid item>
+                                <PlayingCard card={{suite:suite2, value:"3", revealCard:suite2Dictionary["3"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                            </Grid>
+                            <Grid item>
+                                <PlayingCard card={{suite:suite3, value:"3", revealCard:suite3Dictionary["3"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                            </Grid>
+                            <Grid item>
+                                <PlayingCard card={{suite:suite4, value:"3", revealCard:suite4Dictionary["3"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -632,32 +622,32 @@ const ClockSolitare = () => {
                     <Grid item>
                         <Grid container justifyContent="center" spacing={2}>
                             <Grid item>
-                                <PlayingCard suite={suite1} value={"8"} revealCard={suite1Dictionary["8"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite1, value:"8", revealCard:suite1Dictionary["8"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite2} value={"8"} revealCard={suite2Dictionary["8"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite2, value:"8", revealCard:suite2Dictionary["8"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite3} value={"8"} revealCard={suite3Dictionary["8"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite3, value:"8", revealCard:suite3Dictionary["8"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite4} value={"8"} revealCard={suite4Dictionary["8"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite4, value:"8", revealCard:suite4Dictionary["8"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item>
                         <Grid container justifyContent="center" spacing={2}>
                             <Grid item>
-                                <PlayingCard suite={suite1} value={"4"} revealCard={suite1Dictionary["4"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite1, value:"4", revealCard:suite1Dictionary["4"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite2} value={"4"} revealCard={suite2Dictionary["4"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite2, value:"4", revealCard:suite2Dictionary["4"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite3} value={"4"} revealCard={suite3Dictionary["4"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite3, value:"4", revealCard:suite3Dictionary["4"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite4} value={"4"} revealCard={suite4Dictionary["4"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite4, value:"4", revealCard:suite4Dictionary["4"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -668,48 +658,48 @@ const ClockSolitare = () => {
                     <Grid item>
                         <Grid container justifyContent="center" spacing={2}>
                             <Grid item>
-                                <PlayingCard suite={suite1} value={"7"} revealCard={suite1Dictionary["7"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite1, value:"7", revealCard:suite1Dictionary["7"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite2} value={"7"} revealCard={suite2Dictionary["7"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite2, value:"7", revealCard:suite2Dictionary["7"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite3} value={"7"} revealCard={suite3Dictionary["7"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite3, value:"7", revealCard:suite2Dictionary["7"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite4} value={"7"} revealCard={suite4Dictionary["7"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item>
-                        <Grid container justifyContent="center" spacing={2}>
-                            <Grid item>
-                                <PlayingCard suite={suite1} value={"6"} revealCard={suite1Dictionary["6"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
-                            </Grid>
-                            <Grid item>
-                                <PlayingCard suite={suite2} value={"6"} revealCard={suite2Dictionary["6"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
-                            </Grid>
-                            <Grid item>
-                                <PlayingCard suite={suite3} value={"6"} revealCard={suite3Dictionary["6"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
-                            </Grid>
-                            <Grid item>
-                                <PlayingCard suite={suite4} value={"6"} revealCard={suite4Dictionary["6"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite4, value:"7", revealCard:suite3Dictionary["7"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item>
                         <Grid container justifyContent="center" spacing={2}>
                             <Grid item>
-                                <PlayingCard suite={suite1} value={"5"} revealCard={suite1Dictionary["5"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite1, value:"6", revealCard:suite1Dictionary["6"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite2} value={"5"} revealCard={suite2Dictionary["5"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite2, value:"6", revealCard:suite2Dictionary["6"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite3} value={"5"} revealCard={suite3Dictionary["5"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite3, value:"6", revealCard:suite3Dictionary["6"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard suite={suite4} value={"5"} revealCard={suite4Dictionary["5"]} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:suite4, value:"6", revealCard:suite4Dictionary["6"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item>
+                        <Grid container justifyContent="center" spacing={2}>
+                            <Grid item>
+                                <PlayingCard card={{suite:suite1, value:"5", revealCard:suite1Dictionary["5"]}}  containerHeight={containerHeight} containerWidth={containerWidth}/>
+                            </Grid>
+                            <Grid item>
+                                <PlayingCard card={{suite:suite2, value:"5", revealCard:suite2Dictionary["5"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                            </Grid>
+                            <Grid item>
+                                <PlayingCard card={{suite:suite3, value:"5", revealCard:suite3Dictionary["5"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                            </Grid>
+                            <Grid item>
+                                <PlayingCard card={{suite:suite4, value:"5", revealCard:suite4Dictionary["5"]}}containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                         </Grid>
                     </Grid>

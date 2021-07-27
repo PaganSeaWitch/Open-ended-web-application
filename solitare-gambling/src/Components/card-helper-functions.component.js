@@ -7,6 +7,7 @@ export function getCardHeight(containerHeight){
     }
     return tempHeight
 }
+
 export function getAdjustment(cardWidth){
     return Math.ceil(cardWidth/10) + 1;
     

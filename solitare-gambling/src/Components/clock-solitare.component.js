@@ -19,7 +19,7 @@ const ClockSolitare = () => {
     const [stateOfGame, setStateOfGame] = useState("continue")
     const [timer, setTimer] = useState(Date.now()+miliSeconds)
     const [cardsLeft, setCardsLeft] = useState([])
-    
+
     const [suite1KingValues, setSuite1KingValues] = useState({
         "suite" : "?",
         "value" : "?",

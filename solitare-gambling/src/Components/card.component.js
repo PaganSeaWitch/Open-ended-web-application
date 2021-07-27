@@ -15,10 +15,7 @@ const PlayingCard = ({card, containerWidth, containerHeight, stack}) => {
     const hearts = "♥";
     const clubs = "♣"; 
     const cardBack = "░";
-    
-    useEffect(() => {
-        console.log(card)
-    }, [])
+
 
 
     const getMidHeight = () =>{

@@ -15,7 +15,7 @@ const App = () => {
         
         <Route path="/clock" exact render={(props) => (
             <>
-                {<ClockSolitare />}
+                {<ClockSolitare/>}
             </>
         )}
         />

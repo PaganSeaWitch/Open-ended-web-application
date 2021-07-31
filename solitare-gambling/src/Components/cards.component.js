@@ -21,12 +21,19 @@ const PlayingCards = ({cards, currentPile, containerWidth, containerHeight, stop
 
     const pileCardDragHandler = (data, cardPosition) =>{
         const tempArray = pile;
-        for(let i = 0; i < tempArray.length; i++){
-            if(i >= cardPosition.index){
-                tempArray[i].newPosition = {x:data.x,y:data.y};
-           }
+        if(cardPosition.index !== tempArray.length-1){
+            let index = 0;
+            for(let i = 0; i < tempArray.length; i++){
+
+                if(i >= cardPosition.index){
+
+                    tempArray[i].newPosition = {x:data.x,y:data.y+ (index*52)};
+                    index = index + 1;
+               }
+            }
+            setPile([...tempArray]);
         }
-        setPile([...tempArray]);
+        
     }
 
     const getNewPos = (newPosition) =>{
@@ -35,7 +42,7 @@ const PlayingCards = ({cards, currentPile, containerWidth, containerHeight, stop
         if((typeof(newPosition) === 'undefined')  || (newPosition.x === 0 && newPosition.y === 0)){
             return {x: 0, y : getYPos()}
         }
-        return {x: newPosition.x, y : newPosition.y + getYPos()};
+        return {x: newPosition.x, y : newPosition.y};
     }
 
     return (

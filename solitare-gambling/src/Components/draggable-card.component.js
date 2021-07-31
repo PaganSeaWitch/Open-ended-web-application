@@ -12,7 +12,9 @@ const DraggableCard = ({id, card, currentPile, containerWidth, containerHeight, 
         setCurrentPos({x: newPosition.x, y: newPosition.y})
     }, [newPosition])
 
-
+    useEffect(() => {
+        updateZValue(0)
+    }, [id])
 
     const useStyles = makeStyles({
         box: {
@@ -20,18 +22,13 @@ const DraggableCard = ({id, card, currentPile, containerWidth, containerHeight, 
             cursor: "move",
             margin: "auto",
             "user-select" : "none",
-            zIndex :zIndex,
+            zIndex :0,
         },
     });
 
     
-    const updateZValue = () =>{
-        if(zIndex > 0){
-            setZIndex(0);
-        }
-        else{
-            setZIndex(10);
-        }
+    const updateZValue = (num) =>{
+        setZIndex(0);
     }
     
     const defaultStopHandler = () =>{
@@ -48,8 +45,8 @@ const DraggableCard = ({id, card, currentPile, containerWidth, containerHeight, 
     const classes = useStyles();
     return (
         <Draggable  position={currentPos} 
-        onStart={(e,data) => {typeof(startHandler) !== 'undefined' ? startHandler(data, {index:id, pileName:currentPile, currentPos, setPosition: setCurrentPos}) : defaultStartHandler(); updateZValue();}} 
-        onStop={(e,data) =>{typeof(stopHandler) !== 'undefined' ? stopHandler(data, {index: id,pileName:currentPile,currentPos, setPosition: setCurrentPos}) : defaultStopHandler(); updateZValue();}} 
+        onStart={(e,data) => {typeof(startHandler) !== 'undefined' ? startHandler(data, {index:id, pileName:currentPile, currentPos, setPosition: setCurrentPos}) : defaultStartHandler(); updateZValue(10);}} 
+        onStop={(e,data) =>{typeof(stopHandler) !== 'undefined' ? stopHandler(data, {index: id,pileName:currentPile,currentPos, setPosition: setCurrentPos}) : defaultStopHandler(); updateZValue(0);}} 
         onDrag={(e,data) => {typeof(dragHandler) !== 'undefined'? dragHandler(data,{index: id,pileName:currentPile, currentPos, setPosition: setCurrentPos}): defaultDragHandler()}}>
             <div className={classes.box}>
                 <PlayingCard card={card} containerHeight={containerHeight} containerWidth={containerWidth} stack={stack}/>

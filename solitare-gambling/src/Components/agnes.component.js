@@ -39,13 +39,13 @@ const Agnes = () =>{
 
     const fourthPile = [{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:true, draggable:true}];
 
-    const fifthPile = [{},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:true, currentPos:{x:0, y:0}, draggable:true}];
+    const fifthPile = [{},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:true, newPosition:{x:0, y:0}, draggable:true}];
 
-    const sixthPile = [{},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", currentPos:{x:0, y:0},revealCard:true, draggable:true}];
+    const sixthPile = [{},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", newPosition:{x:0, y:0},revealCard:true, draggable:true}];
 
-    const [seventhPile, setSeventhPile] = useState([{},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:true,currentPos:{x:0, y:0},draggable:true},{suite:"club", value:"5", revealCard:true,currentPos:{x:0, y:0},draggable:true},{suite:"club", value:"6", revealCard:true,currentPos:{x:0, y:0},draggable:true},{suite:"club", value:"7", revealCard:true, currentPos:{x:0, y:0},draggable:true}]);
+    const [seventhPile, setSeventhPile] = useState([{},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:false},{suite:"club", value:"7", revealCard:true,newPosition:{x:0, y:0},draggable:true},{suite:"club", value:"5", revealCard:true,newPosition:{x:0, y:0},draggable:true},{suite:"club", value:"6", revealCard:true,newPosition:{x:0, y:0},draggable:true},{suite:"club", value:"7", revealCard:true, newPosition:{x:0, y:0},draggable:true}]);
 
-
+    const [currentlyMovingPos, setCurrentlyMovingPos] = useState({x: 0, y: 0})
 
     const pileDictionary = {
         [pile1] : firstPile,
@@ -59,24 +59,31 @@ const Agnes = () =>{
 
     
     const pileCardStopHandler = (data, cardPosition) =>{
-        moveCardPile(pileDictionary[cardPosition.pileName], cardPosition.index, {x:data.x, y: data.y})
-        
-    }
-
-    const moveCardPile = (cardPile, initalIndex, currentPos) =>{
-        const tempArray = cardPile;
-        console.log(currentPos);
+        const tempArray = pileDictionary[cardPosition.pileName];
         for(let i = 0; i < tempArray.length; i++){
-            if(i >= initalIndex){
-                currentPos = {x: currentPos.x, y: currentPos.y + 52}
-                tempArray[i].currentPos = currentPos;
+            if(i >= cardPosition.index){
+                tempArray[i].newPosition = cardPosition.currentPos;
 
             }
         }
         setSeventhPile([...tempArray]);
+        setCurrentlyMovingPos({x:0,y:0})
+
     }
+
+
+    const pileCardStartHandler = (data, cardPosition) =>{
+        
+    }
+
     const pileCardDragHandler = (data, cardPosition) =>{
-        moveCardPile(pileDictionary[cardPosition.pileName], cardPosition.index, {x:data.x, y: data.y})
+        const tempArray = pileDictionary[cardPosition.pileName];;
+        for(let i = 0; i < tempArray.length; i++){
+            if(i >= cardPosition.index){
+                tempArray[i].newPosition = {x:data.x,y:data.y};
+           }
+        }
+        setSeventhPile([...tempArray]);
     }
 
     return (
@@ -88,34 +95,34 @@ const Agnes = () =>{
                     <PlayingCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                 </Grid>
                 <Grid item>
-                    <DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={pileCardStopHandler}/>
+                    <DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} newPosition={currentlyMovingPos} dragHandler={pileCardDragHandler}/>
                     <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>
                 </Grid>
                 <Grid item>
                     <InvisibleCard containerHeight={containerHeight} containerWidth={containerWidth}/>
                 </Grid>
                 <Grid item>
-                    {cardInFirstFoundation ?<DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={pileCardStopHandler}  />
+                    {cardInFirstFoundation ?<DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} newPosition={position} stopHandler={pileCardStopHandler}  />
                         : <></>}
                     {firstFoundation.length > 1 ?<PlayingCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} />
                         : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                 </Grid>
                 <Grid item>
-                    {cardInSecondFoundation ?<DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={pileCardStopHandler}  />
+                    {cardInSecondFoundation ?<DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} newPosition={position} stopHandler={pileCardStopHandler}  />
                         : <></>}
                     {secondFoundation.length > 1 ?<PlayingCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                         : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                 </Grid>
                 <Grid item>
                     
-                    {cardInThirdFoundation ?<DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={pileCardStopHandler}  />
+                    {cardInThirdFoundation ?<DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} newPosition={position} stopHandler={pileCardStopHandler}  />
                         : <></>}
                     {thirdFoundation.length > 1 ?<PlayingCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                         : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                     
                 </Grid>
                 <Grid item>
-                    {cardInFourthFoundation ?<DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} currentPos={position} stopHandler={pileCardStopHandler}  />
+                    {cardInFourthFoundation ?<DraggableCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} newPosition={position} stopHandler={pileCardStopHandler}  />
                         : <></>}
                     {fourthFoundation.length > 1 ?<PlayingCard card={{suite:"diamond", value:"12", revealCard:true}} containerHeight={containerHeight} containerWidth={containerWidth} />
                         : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
@@ -158,7 +165,7 @@ const Agnes = () =>{
                     
                 </Grid>
                 <Grid item>
-                    {seventhPile.length > 0 ? <PlayingCards cards={seventhPile} currentPile={pile7} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler} dragHandler={pileCardDragHandler} />
+                    {seventhPile.length > 0 ? <PlayingCards cards={seventhPile} currentPile={pile7} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler} startHandler={pileCardStartHandler} dragHandler={pileCardDragHandler} />
                             : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                    
                 </Grid>
@@ -166,5 +173,5 @@ const Agnes = () =>{
         </div>
         );
 };
-
+Agnes.whyDidYouRender = true
 export default Agnes;

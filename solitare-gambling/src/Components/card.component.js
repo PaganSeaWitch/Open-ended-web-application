@@ -228,7 +228,6 @@ const PlayingCard = ({card, containerWidth, containerHeight, stack}) => {
             return marginTop;
         }
         else{
-            console.log("moving UP Completely")
             const marginTop=  -22.6 * (cardHeight -2) +"px"
             return marginTop;
         }

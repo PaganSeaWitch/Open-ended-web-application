@@ -8,9 +8,9 @@ export const pile5 = "fifth";
 export const pile6 = "sixth";
 export const pile7 = "seventh";
 export const noPile = "out";
-export function whereIsCard(pile, posX,containerWidth){
+export function whereIsPileCardInRelationToPiles(pile, posX,containerWidth){
     let i = 0;
-    let cardWidth = getCardWidth(containerWidth)+ getAdjustment(getCardWidth(containerWidth));
+    const cardWidth = getCardWidth(containerWidth)+ getAdjustment(getCardWidth(containerWidth))+20;
     switch(pile){
         case(pile1):
             i = 1;
@@ -39,23 +39,26 @@ export function whereIsCard(pile, posX,containerWidth){
     }
     if(posX < 0){
         posX = posX * -1;
-        cardWidth = cardWidth + 20;
         while(posX > cardWidth){
             posX = posX - cardWidth;
             i--;
         }
-        return getPile(i);
     }
-    cardWidth = cardWidth + 20;
-    while(posX > cardWidth){
-        posX = posX - cardWidth;
-        i++;
+    else{
+        while(posX > cardWidth){
+            posX = posX - cardWidth;
+            i++;
+        }
     }
-    return getPile(i);
+    const pileAt = getPile(i);
+    if(pileAt === 'out'){
+        return pile;
+    }
+    return pileAt;
 }
 
 
-function getPile( i){
+export function getPile(i){
     switch(i){
         case(1):
             return pile1

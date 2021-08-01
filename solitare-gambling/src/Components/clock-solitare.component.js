@@ -5,15 +5,13 @@ import Grid from '@material-ui/core/Grid';
 import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Countdown from 'react-countdown';
+import { suite1, suite2, suite3, suite4 } from './card-helper-functions.component';
 const ClockSolitare = () => {
 	
     const { height, width } = useWindowDimensions();
     const containerHeight = height 
     const containerWidth = width  - 300
-    const suite1 = "diamond"
-    const suite2 = "club"
-    const suite3 = "heart"
-    const suite4 = "spade"
+
     const miliSeconds = 15000
     const [countdownAPI, setCountdownAPI] = useState()
     const [stateOfGame, setStateOfGame] = useState("continue")

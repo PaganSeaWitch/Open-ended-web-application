@@ -22,4 +22,7 @@ export function getCardWidth(containerWidth){
     return tempWidth
 }
 
-
+export const suite1 = "diamond"
+export const suite2 = "club"
+export const suite3 = "heart"
+export const suite4 = "spade"

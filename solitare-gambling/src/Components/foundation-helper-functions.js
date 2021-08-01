@@ -27,6 +27,8 @@ export function WhereIsFoundationCardInRelationToPiles(pos, foundationName, cont
             console.log(foundationName)
             return null;
     }
+
+
     if(pos.x < 0){
         pos.x = pos.x * -1;
         while(pos.x > cardWidth){
@@ -34,14 +36,16 @@ export function WhereIsFoundationCardInRelationToPiles(pos, foundationName, cont
             i--;
         }
     }
+    
+    
     else{
         while(pos.x > cardWidth){
             pos.x = pos.x - cardWidth;
             i++;
         }
     }
-    console.log(pos.y)
-    console.log(cardHeight)
+
+
     if(pos.y < cardHeight){
         
         const atFoundation = getFoundation(i);

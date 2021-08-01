@@ -25,6 +25,7 @@ const DraggableCard = ({id, z, card, currentPile, containerWidth, containerHeigh
     }
     const defaultStartHandler = () =>{
         console.log("default start handler used");
+        console.log(newPosition);
         console.log(z)
     }
 

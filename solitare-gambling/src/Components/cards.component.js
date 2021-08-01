@@ -8,15 +8,27 @@ const PlayingCards = ({type, cards, currentPile, containerWidth, containerHeight
 
     const indexOfFirstDragCard = cards.findIndex((e) => e.draggable === true);
     const [pile,setPile] = useState([])
+    let currentDragCardAmt = 0;
 
     useEffect(() => {
         setPile([...cards])
+        currentDragCardAmt = 0;
     }, [cards])
 
-    let currentDragCardAmt = 0;
 
-    const getYPos = () =>{
-        return currentDragCardAmt++ * 52;
+    const getYPos = (index) =>{
+        let amt = 52;
+        if(pile[1].draggable && index < 4){
+            index = index - 2;
+            amt = 5 + (25*index)
+        }
+        if(pile[1].draggable && index ===4 ){
+            amt = 40
+        }
+        if(pile[1].draggable && index >4 ){
+            amt = 45
+        }
+        return currentDragCardAmt++ * amt;
     }
 
     const pileCardDragHandler = (data, cardPosition) =>{
@@ -35,9 +47,9 @@ const PlayingCards = ({type, cards, currentPile, containerWidth, containerHeight
         setPile([...tempArray]);
     }
 
-    const getNewPos = (newPosition) =>{
+    const getNewPos = (newPosition, index) =>{
         if((typeof(newPosition) === 'undefined')  || (newPosition.x === 0 && newPosition.y === 0)){
-            return {x: 0, y : getYPos()}
+            return {x: 0, y : getYPos(index)}
         }
         return {x: newPosition.x, y : newPosition.y};
     }
@@ -48,7 +60,7 @@ const PlayingCards = ({type, cards, currentPile, containerWidth, containerHeight
                 <DraggableCard key={index} id={index} card={card} z={card.z} currentPile={currentPile} containerHeight={containerHeight} containerWidth={containerWidth} newPosition={getNewPos(card.newPosition)}  stack={"first"} startHandler={startHandler}  stopHandler={stopHandler} dragHandler={pileCardDragHandler} />:
                 <div key={index} className={"block"}><PlayingCard  card={card} containerHeight={containerHeight} containerWidth={containerWidth}  stack={"first"} /></div>))))
             :<></>) : (pile !== 'undefined' ? (pile.map((card, index) =>(index === 0 ?<BlankCardSpace key={index} containerHeight={containerHeight} containerWidth={containerWidth}/>: (card.draggable ?
-                <DraggableCard key={index} id={index} card={card} z={card.z} currentPile={currentPile} containerHeight={containerHeight} containerWidth={containerWidth} newPosition={getNewPos(card.newPosition)}  stack={index === 1 ? "first" :"rest"} startHandler={startHandler}  stopHandler={stopHandler} dragHandler={pileCardDragHandler} />:
+                <DraggableCard key={index} id={index} card={card} z={card.z} currentPile={currentPile} containerHeight={containerHeight} containerWidth={containerWidth} newPosition={getNewPos(card.newPosition, index)}  stack={index === 1 ? "first" :"rest"} startHandler={startHandler}  stopHandler={stopHandler} dragHandler={pileCardDragHandler} />:
                 <div key={index} className={"block"}><PlayingCard  card={card} containerHeight={containerHeight} containerWidth={containerWidth}  stack={index === 1 ? "first" :"rest"} /></div>))))
             :<></>)}
             

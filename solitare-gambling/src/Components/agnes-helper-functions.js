@@ -1,23 +1,38 @@
 
 import { suite1, suite2, suite3, suite4 } from './card-helper-functions.component';
 
-export function CheckAgnesRulesForPiles(array, index, newPile){
-    const cardToCheck = array[index];
+export function CheckAgnesRulesForTransferingToPiles(cardToCheck, newPile){
     if(newPile.length === 1){
         return false;
     }
     const cardToCheckAgainst = newPile[newPile.length -1];
     const suite = cardToCheck.suite;
     const otherSuite = cardToCheckAgainst.suite;
-    if(checkSuite(suite, otherSuite)){
+    if(checkSuiteColor(suite, otherSuite)){
         const value = cardToCheck.value;
         const otherValue = cardToCheckAgainst.value;
-        return checkValue(value, otherValue);
+        return checkValueIsHigher(value, otherValue);
     }
     return false
 }
 
-function checkSuite(suite, otherSuite){
+export function CheckAgnesRulesForTransferingToFoundation(cardToCheck, newFoundation, defaultValue){
+    if(newFoundation.length === 1){
+        console.log("checking against default value:" +defaultValue)
+        return checkValueIsSame(cardToCheck.value, defaultValue);
+    }
+    const cardToCheckAgainst = newFoundation[newFoundation.length-1];
+    const suite = cardToCheck.suite; 
+    const otherSuite = cardToCheckAgainst.suite;
+    const value = cardToCheck.value;
+    const otherValue = cardToCheckAgainst.value;
+    if(suite === otherSuite){
+        return checkValueIsHigher(otherValue, value)
+    }
+    return false;
+}
+
+function checkSuiteColor(suite, otherSuite){
     if(suite === suite1 || suite === suite3){
         return (otherSuite === suite1 || otherSuite === suite3)
     }
@@ -26,11 +41,20 @@ function checkSuite(suite, otherSuite){
     }
 }
 
-function checkValue(value, otherValue){
+function checkValueIsHigher(value, otherValue){
     const otherNum =Number.parseInt(otherValue)
     const num = Number.parseInt(value);
 
     if(num + 1 === otherNum){
+        return true;
+    }
+    return false;
+}
+
+function checkValueIsSame(value, otherValue){
+    const otherNum = Number.parseInt(otherValue)
+    const num = Number.parseInt(value)
+    if(num === otherNum){
         return true;
     }
     return false;

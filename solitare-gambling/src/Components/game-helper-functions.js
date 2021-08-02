@@ -33,11 +33,22 @@ export function getRandomCard(cardsLeft, setCardsLeft){
 export function getRandomCards(amt, cardsLeft, setCardsLeft){
     const tempArray = cardsLeft;
     const cardArray = [];
-    for(let i = 0; i< amt; i++){
-        let randNum = getRandomInt(0, tempArray.length);
-        let gottenString = tempArray[randNum];
-        tempArray.splice(randNum, 1);
-        cardArray.push(createCard(gottenString));
+    if(amt > tempArray.length){
+        console.log("asking for:" + amt)
+        console.log("Have : " +tempArray.length)
+        for(let i = 0; i< cardsLeft.length; i++){
+            let gottenString = tempArray[i];
+            cardArray.push(createCard(gottenString));
+        }
+        tempArray.splice(0, tempArray.length)
+    }
+    else{
+        for(let i = 0; i< amt; i++){
+            let randNum = getRandomInt(0, tempArray.length);
+            let gottenString = tempArray[randNum];
+            tempArray.splice(randNum, 1);
+            cardArray.push(createCard(gottenString));
+        }
     }
     setCardsLeft(tempArray)
     return cardArray;

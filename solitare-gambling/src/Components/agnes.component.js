@@ -9,7 +9,8 @@ import { CheckAgnesRulesForTransferingToPiles, CheckAgnesRulesForTransferingToFo
 import { suite1, suite2, suite3, suite4 } from './card-helper-functions.component';
 import { foundation1, foundation2, foundation3, foundation4, WhereIsFoundationCard} from './foundation-helper-functions.js'
 import GameOverDialogue from "./Game-over-dialogue.component";
-import {getStandardDeckOfCards, getRandomCard, getRandomCards, addCardProperties} from "./game-helper-functions"
+import {getStandardDeckOfCards, getRandomCard, getRandomCards, addCardProperties, getRandomInt} from "./game-helper-functions"
+import BlankCardSpace from "./blank-card-space.component";
 
 const Agnes = () =>{
 
@@ -19,8 +20,8 @@ const Agnes = () =>{
     const containerWidth = width  - 300
 
     const [cardsLeft, setCardsLeft] = useState(getStandardDeckOfCards)
-    const [gameEnd, setGameEnd] = useState(true);
-    const [gameStart, setGameStart] = useState(false)
+    const [gameEnd, setGameEnd] = useState(false);
+    const [gameStart, setGameStart] = useState(true)
     const [firstFoundation, setFirstFoundation] = useState([{}]);
     const [secondFoundation, setSecondFoundation] = useState([{}])
     const [thirdFoundation, setThirdFoundation] = useState([{}]);
@@ -338,11 +339,12 @@ const Agnes = () =>{
     }
 
     const startGame = () =>{
-        console.log(cardsLeft)
         const cards = getRandomCards(29, cardsLeft, setCardsLeft);
+        console.log(cards.length)
         const foundation1Cards = addCardProperties(cards.splice(0,1))
 
         addToFoundation(foundation1Cards, foundation1);
+        setCurrentLeadingValue(foundation1Cards[0].value);
         const pile1Cards = addCardProperties(cards.splice(0,1));
         const pile2Cards = addCardProperties(cards.splice(0,2));
         const pile3Cards = addCardProperties(cards.splice(0,3));
@@ -357,6 +359,30 @@ const Agnes = () =>{
         addToPile(pile5Cards, pile5);
         addToPile(pile6Cards, pile6);
         addToPile(pile7Cards, pile7);
+    }
+
+    const addMoreCards = () =>{
+        console.log("adding more cards")
+        const cards = getRandomCards(7, cardsLeft, setCardsLeft);
+        console.log(cards)
+        const pile1Cards = addCardProperties(cards.splice(0,1));
+        const pile2Cards = addCardProperties(cards.splice(0,1));
+        addToPile(pile1Cards, pile1);
+        addToPile(pile2Cards, pile2);
+       
+        if(cards.length !== 0){
+            const pile3Cards = addCardProperties(cards.splice(0,1));
+            const pile4Cards = addCardProperties(cards.splice(0,1));
+            const pile5Cards = addCardProperties(cards.splice(0,1));
+            const pile6Cards = addCardProperties(cards.splice(0,1));
+            const pile7Cards = addCardProperties(cards.splice(0,1));
+
+            addToPile(pile3Cards, pile3);
+            addToPile(pile4Cards, pile4);
+            addToPile(pile5Cards, pile5);
+            addToPile(pile6Cards, pile6);
+            addToPile(pile7Cards, pile7);
+        }
     }
 
     useEffect(() => {
@@ -386,7 +412,9 @@ const Agnes = () =>{
         <div>
             <Grid container justifyContent="center" spacing={5}>
                 <Grid item>
-                    <PlayingCard card={{suite:"diamond", value:"12", revealCard:false}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                    {cardsLeft.length !== 0 ?<div style={{'cursor':"pointer"}} onClick={addMoreCards}>
+                    <PlayingCard  card={{suite:"diamond", value:"12", revealCard:false}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                    </div> : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
                 </Grid>
                 <Grid item>
                     <InvisibleCard containerHeight={containerHeight} containerWidth={containerWidth}/>

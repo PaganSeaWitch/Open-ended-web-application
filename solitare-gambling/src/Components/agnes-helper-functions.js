@@ -16,6 +16,9 @@ export function CheckAgnesRulesForTransferingToPiles(cardToCheck, newPile){
     return false
 }
 
+
+
+
 export function CheckAgnesRulesForTransferingToFoundation(cardToCheck, newFoundation, defaultValue){
     if(newFoundation.length === 1){
         console.log("checking against default value:" +defaultValue)

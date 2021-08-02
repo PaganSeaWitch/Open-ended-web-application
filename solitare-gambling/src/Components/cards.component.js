@@ -57,7 +57,7 @@ const PlayingCards = ({type, cards, currentPile, containerWidth, containerHeight
     return (
         <div>
             {type === 'foundation' ? (pile !== 'undefined' ? (pile.map((card, index) =>(index === 0 ?<BlankCardSpace key={index} containerHeight={containerHeight} containerWidth={containerWidth}/>: (card.draggable ?
-                <DraggableCard key={index} id={index} card={card} z={card.z} currentPile={currentPile} containerHeight={containerHeight} containerWidth={containerWidth} newPosition={getNewPos(card.newPosition)}  stack={"first"} startHandler={startHandler}  stopHandler={stopHandler} dragHandler={pileCardDragHandler} />:
+                <DraggableCard key={index} id={index} card={card} z={card.z} currentPile={currentPile} containerHeight={containerHeight} containerWidth={containerWidth} newPosition={getNewPos(card.newPosition, index)}  stack={"first"} startHandler={startHandler}  stopHandler={stopHandler} dragHandler={pileCardDragHandler} />:
                 <div key={index} className={"block"}><PlayingCard  card={card} containerHeight={containerHeight} containerWidth={containerWidth}  stack={"first"} /></div>))))
             :<></>) : (pile !== 'undefined' ? (pile.map((card, index) =>(index === 0 ?<BlankCardSpace key={index} containerHeight={containerHeight} containerWidth={containerWidth}/>: (card.draggable ?
                 <DraggableCard key={index} id={index} card={card} z={card.z} currentPile={currentPile} containerHeight={containerHeight} containerWidth={containerWidth} newPosition={getNewPos(card.newPosition, index)}  stack={index === 1 ? "first" :"rest"} startHandler={startHandler}  stopHandler={stopHandler} dragHandler={pileCardDragHandler} />:

@@ -1,15 +1,16 @@
-import DraggableCard from "./draggable-card.component";
 import {useWindowDimensions} from "./helper-functions.componet";
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import Grid from '@material-ui/core/Grid';
 import PlayingCard from "./card.component";
-import BlankCardSpace from "./blank-card-space.component";
 import InvisibleCard from "./invisible-card.component";
 import PlayingCards from "./cards.component";
-import { pile1,pile2,pile3,pile4,pile5,pile6,pile7, whereIsPileCardInRelationToPiles } from "./pile-helper-functions";
+import { pile1,pile2,pile3,pile4,pile5,pile6,pile7, whereIsPileCard } from "./pile-helper-functions";
 import { CheckAgnesRulesForTransferingToPiles, CheckAgnesRulesForTransferingToFoundation } from "./agnes-helper-functions";
 import { suite1, suite2, suite3, suite4 } from './card-helper-functions.component';
-import { foundation1, foundation2, foundation3, foundation4, WhereIsFoundationCardInRelationToPiles} from './foundation-helper-functions.js'
+import { foundation1, foundation2, foundation3, foundation4, WhereIsFoundationCard} from './foundation-helper-functions.js'
+import GameOverDialogue from "./Game-over-dialogue.component";
+import {getStandardDeckOfCards, getRandomCard, getRandomCards, addCardProperties} from "./game-helper-functions"
+
 const Agnes = () =>{
 
     const { height, width } = useWindowDimensions();
@@ -17,21 +18,23 @@ const Agnes = () =>{
     const containerHeight = height 
     const containerWidth = width  - 300
 
-
+    const [cardsLeft, setCardsLeft] = useState(getStandardDeckOfCards)
+    const [gameEnd, setGameEnd] = useState(true);
+    const [gameStart, setGameStart] = useState(false)
     const [firstFoundation, setFirstFoundation] = useState([{}]);
-    const [secondFoundation, setSecondFoundation] = useState([{},{suite:suite1, value:"5", revealCard:true, draggable:true}])
-    const [thirdFoundation, setThirdFoundation] = useState([{},{suite:suite1, value:"4", revealCard:true, draggable:true}]);
-    const [fourthFoundation, setFourthFoundation] = useState([{},{suite:suite1, value:"2", revealCard:true},{suite:suite1, value:"3", revealCard:true, draggable:true}]);
+    const [secondFoundation, setSecondFoundation] = useState([{}])
+    const [thirdFoundation, setThirdFoundation] = useState([{}]);
+    const [fourthFoundation, setFourthFoundation] = useState([{}]);
 
-    const currentLeadingValue ="5";
+    const [currentLeadingValue, setCurrentLeadingValue] = useState(1)
 
-    const [firstPile, setFirstPile] = useState([{},{suite:suite1, value:"6", revealCard:true, draggable:true}]);
-    const [secondPile, setSecondPile] = useState([{},{suite:suite1, value:"2", revealCard:true,draggable: true},{suite:suite2, value:"2", revealCard:true, draggable:true}]);
-    const [thirdPile, setThirdPile] = useState([{},{suite:suite1, value:"7", revealCard:false},{suite:suite2, value:"7", revealCard:false},{suite:suite2, value:"7", revealCard:true, draggable:true}]);
-    const [fourthPile, setFourthPile] = useState([{suite:suite1, value:"7", revealCard:false},{suite:suite2, value:"7", revealCard:false},{suite:suite2, value:"7", revealCard:false},{suite:suite2, value:"7", revealCard:true, draggable:true}]);
-    const [fifthPile, setFifthPile] = useState([{},{suite:suite1, value:"7", revealCard:false},{suite:suite2, value:"7", revealCard:false},{suite:suite2, value:"7", revealCard:false},{suite:suite2, value:"7", revealCard:false},{suite:suite2, value:"7", revealCard:true, newPosition:{x:0, y:0}, draggable:true}]);
-    const [sixthPile, setSixthPile] = useState([{},{suite:suite1, value:"7", revealCard:false},{suite:suite2, value:"7", revealCard:false},{suite:suite2, value:"7", revealCard:false},{suite:suite2, value:"7", revealCard:false},{suite:suite2, value:"7", revealCard:false},{suite:suite2, value:"8", newPosition:{x:0, y:0},revealCard:true, draggable:true}]);
-    const [seventhPile, setSeventhPile] = useState([{},{suite:suite1, value:"10", revealCard:true, draggable:true},{suite:suite2, value:"9", revealCard:true, draggable:true},{suite:suite2, value:"8", revealCard:true, draggable:true},{suite:suite2, value:"6", revealCard:true, draggable:true,newPosition:{x:0, y:0},draggable:true},{suite:suite2, value:"5", revealCard:true,newPosition:{x:0, y:0},draggable:true},{suite:suite2, value:"4", revealCard:true,newPosition:{x:0, y:0},draggable:true},{suite:suite2, value:"3", revealCard:true, newPosition:{x:0, y:0},draggable:true}]);
+    const [firstPile, setFirstPile] = useState([{}]);
+    const [secondPile, setSecondPile] = useState([{}]);
+    const [thirdPile, setThirdPile] = useState([{}]);
+    const [fourthPile, setFourthPile] = useState([{}]);
+    const [fifthPile, setFifthPile] = useState([{}]);
+    const [sixthPile, setSixthPile] = useState([{}]);
+    const [seventhPile, setSeventhPile] = useState([{}]);
 
 
     const foundationDictionary ={
@@ -134,25 +137,41 @@ const Agnes = () =>{
         }
     }
 
+
     const addToFoundation = (tempArray, foundationName) =>{
+        let array;
         switch(foundationName){
             case(foundation1):
-                setFirstFoundation([...firstFoundation,...tempArray])
+                array = firstFoundation;
+                array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:true, draggable:false}})
+                console.log(array)
+                setFirstFoundation([...array,...tempArray])
                 break;
             case(foundation2):
-                setSecondFoundation([...secondFoundation,...tempArray])
+                 array = secondFoundation;
+                 array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:true, draggable:false}})
+                 console.log(array)
+                setSecondFoundation([...array,...tempArray])
                 break;
             case(foundation3):
-                setThirdFoundation([...thirdFoundation,...tempArray])
+                array = thirdFoundation;
+                array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:true, draggable:false}})
+                console.log(array)
+                setThirdFoundation([...array,...tempArray])
                 break;
             case(foundation4):
-                setFourthFoundation([...fourthFoundation,...tempArray])
+                array = fourthFoundation;
+                array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:true, draggable:false}})
+                console.log(array)
+                setFourthFoundation([...array,...tempArray])
                 break;
             default:
                 console.log(foundationName)
                 break;
         }
     }
+
+
     const getFoundation = (foundationName) =>{
         switch(foundationName){
             case(foundation1):
@@ -167,6 +186,7 @@ const Agnes = () =>{
                 return null;
         }
     }
+
 
     const setFoundation = (tempArray, foundationName) =>{
         switch(foundationName){
@@ -189,6 +209,7 @@ const Agnes = () =>{
         }
     }
 
+
     const transferPileToPile = (tempArray, oldPile, newPile, index) =>{
         
         const transferArray = tempArray.slice(index);
@@ -201,6 +222,19 @@ const Agnes = () =>{
         addToPile(transferArray, newPile);
     }
 
+
+    const transferPileToFoundation = (tempArray, oldPile, newFoundation) =>{
+        const transferArray = tempArray.slice(tempArray.length-1);
+        const oldArray = tempArray.slice(0, tempArray.length-1);
+        if(oldArray.length !== 1){
+            oldArray[oldArray.length-1].draggable = true;
+            oldArray[oldArray.length-1].revealCard = true;
+        }
+        setPile(oldArray, oldPile);
+        addToFoundation(transferArray, newFoundation);
+    }
+
+
     const transferFoundationToPile = (tempArray, oldFoundation, newPile) =>{
         const transferArray = tempArray.slice(tempArray.length-1);
         const oldArray = tempArray.slice(0, tempArray.length-1);
@@ -211,6 +245,7 @@ const Agnes = () =>{
         setFoundation(oldArray, oldFoundation);
         addToPile(transferArray, newPile);
     }
+
 
     const transferFoundationToFoundation = (tempArray, oldFoundation, newFoundation) =>{
         const transferArray = tempArray.slice(tempArray.length-1)
@@ -223,8 +258,9 @@ const Agnes = () =>{
         addToFoundation(transferArray, newFoundation);
     }
 
+
     const pileCardStopHandler = (data, cardPosition) =>{
-        let newPile = whereIsPileCardInRelationToPiles(cardPosition.pileName, data.x, containerWidth);
+        let newLocation = whereIsPileCard({x:data.x, y:data.y},cardPosition.pileName, containerHeight, containerWidth);
         const tempArray = pileDictionary[cardPosition.pileName];
         for(let i = 0; i < tempArray.length; i++){
             if(i >= cardPosition.index){
@@ -234,11 +270,25 @@ const Agnes = () =>{
             }
         }
         
-        if(newPile === cardPosition.pileName){
+        if(newLocation === cardPosition.pileName){
             setPile(tempArray, cardPosition.pileName);
         }
-        (CheckAgnesRulesForTransferingToPiles(tempArray[cardPosition.index], getPile(newPile)) ?  transferPileToPile(tempArray, cardPosition.pileName, newPile, cardPosition.index):    setPile(tempArray, cardPosition.pileName))
-
+        const foundation = getFoundation(newLocation)
+        const pile = getPile(newLocation)
+        console.log(foundation)
+        console.log(pile)
+        if(newLocation === cardPosition.pileName){
+            setFoundation(tempArray, cardPosition.pileName);
+        }
+        else if(foundation !== null){
+            (CheckAgnesRulesForTransferingToFoundation(tempArray[tempArray.length-1], foundation, currentLeadingValue) ? transferPileToFoundation(tempArray, cardPosition.pileName, newLocation) : setPile(tempArray, cardPosition.pileName))
+        }
+        else if(pile !== null){
+            (CheckAgnesRulesForTransferingToPiles(tempArray[cardPosition.index], pile) ?  transferPileToPile(tempArray, cardPosition.pileName, newLocation, cardPosition.index):    setPile(tempArray, cardPosition.pileName))
+        }
+        else{
+            console.log("Error:No Pile or foundation Found");
+        }
     }
 
 
@@ -252,7 +302,7 @@ const Agnes = () =>{
                 tempArray[i].z = 0;
             }
         }
-        let newLocation = WhereIsFoundationCardInRelationToPiles({x:data.x, y:data.y}, cardPosition.pileName, containerHeight, containerWidth)
+        let newLocation = WhereIsFoundationCard({x:data.x, y:data.y}, cardPosition.pileName, containerHeight, containerWidth)
         console.log(newLocation)
         const foundation = getFoundation(newLocation)
         const pile = getPile(newLocation)
@@ -271,6 +321,66 @@ const Agnes = () =>{
             console.log("Error:No Pile or foundation Found");
         }
     }
+
+    const resetGame = () =>{
+        setFirstFoundation([{}])
+        setSecondFoundation([{}])
+        setThirdFoundation([{}])
+        setFourthFoundation([{}])
+        setFirstPile([{}])
+        setSecondPile([{}])
+        setThirdPile([{}])
+        setFourthPile([{}])
+        setFifthPile([{}])
+        setSixthPile([{}])
+        setSeventhPile([{}])
+        setGameStart(true)
+    }
+
+    const startGame = () =>{
+        console.log(cardsLeft)
+        const cards = getRandomCards(29, cardsLeft, setCardsLeft);
+        const foundation1Cards = addCardProperties(cards.splice(0,1))
+
+        addToFoundation(foundation1Cards, foundation1);
+        const pile1Cards = addCardProperties(cards.splice(0,1));
+        const pile2Cards = addCardProperties(cards.splice(0,2));
+        const pile3Cards = addCardProperties(cards.splice(0,3));
+        const pile4Cards = addCardProperties(cards.splice(0,4));
+        const pile5Cards = addCardProperties(cards.splice(0,5));
+        const pile6Cards = addCardProperties(cards.splice(0,6));
+        const pile7Cards = addCardProperties(cards.splice(0,7));
+        addToPile(pile1Cards, pile1);
+        addToPile(pile2Cards, pile2);
+        addToPile(pile3Cards, pile3);
+        addToPile(pile4Cards, pile4);
+        addToPile(pile5Cards, pile5);
+        addToPile(pile6Cards, pile6);
+        addToPile(pile7Cards, pile7);
+    }
+
+    useEffect(() => {
+        if(firstFoundation.length !== 14){
+            return;
+        }
+        if(secondFoundation.length !== 14){
+            return;
+        }
+        if(thirdFoundation.length !== 14){
+            return;
+        }
+        if(fourthFoundation.length !== 14){
+            return;
+        }
+        setGameEnd(true);
+    }, [firstFoundation,secondFoundation,thirdFoundation,fourthFoundation])
+
+    useEffect(() => {
+        if(gameStart === true){
+            setGameStart(false)
+            startGame()
+        }
+    }, [gameStart])
 
     return (
         <div>
@@ -321,6 +431,7 @@ const Agnes = () =>{
                      <PlayingCards type={'pile'} cards={seventhPile} currentPile={pile7} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler} />
                 </Grid>
             </Grid>
+            <GameOverDialogue title={"The Game Is OVER!"} open={gameEnd} setOpen={setGameEnd} onConfirm={resetGame}> Would you like to Reset the Game? You can do so later.</GameOverDialogue>
         </div>
         );
 };

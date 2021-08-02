@@ -6,7 +6,7 @@ export const foundation3 = 'thirdFoundation'
 export const foundation4 = 'fourthFoundation'
 export const noFoundation = 'out'
 
-export function WhereIsFoundationCardInRelationToPiles(pos, foundationName, containerHeight, containerWidth){
+export function WhereIsFoundationCard(pos, foundationName, containerHeight, containerWidth){
     let i = 0;
     const cardWidth = getCardWidth(containerWidth)+ getAdjustment(getCardWidth(containerWidth))+20;
     const cardHeight = getCardHeight(containerHeight) *20;
@@ -61,7 +61,7 @@ export function WhereIsFoundationCardInRelationToPiles(pos, foundationName, cont
     return atPile;
 }
 
-function getFoundation(i){
+export function getFoundation(i){
     switch(i){
         case(4):
             return foundation1

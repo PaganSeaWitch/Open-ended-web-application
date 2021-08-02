@@ -1,5 +1,5 @@
-import { getCardWidth, getAdjustment } from "./card-helper-functions.component";
-
+import { getCardWidth, getCardHeight, getAdjustment } from "./card-helper-functions.component";
+import { getFoundation } from "./foundation-helper-functions";
 export const pile1 = "first";
 export const pile2 = "second";
 export const pile3 = "third";
@@ -8,9 +8,11 @@ export const pile5 = "fifth";
 export const pile6 = "sixth";
 export const pile7 = "seventh";
 export const noPile = "out";
-export function whereIsPileCardInRelationToPiles(pile, posX,containerWidth){
+export function whereIsPileCard(pos, pile, containerHeight, containerWidth){
     let i = 0;
     const cardWidth = getCardWidth(containerWidth)+ getAdjustment(getCardWidth(containerWidth))+20;
+    const cardHeight = getCardHeight(containerHeight) *20;
+
     switch(pile){
         case(pile1):
             i = 1;
@@ -37,24 +39,35 @@ export function whereIsPileCardInRelationToPiles(pile, posX,containerWidth){
             console.log(pile)
             return null;
     }
-    if(posX < 0){
-        posX = posX * -1;
-        while(posX > cardWidth){
-            posX = posX - cardWidth;
+    if(pos.x < 0){
+        pos.x = pos.x * -1;
+        while(pos.x > cardWidth){
+            pos.x = pos.x - cardWidth;
             i--;
         }
     }
     else{
-        while(posX > cardWidth){
-            posX = posX - cardWidth;
+        while(pos.x > cardWidth){
+            pos.x = pos.x - cardWidth;
             i++;
         }
     }
-    const pileAt = getPile(i);
-    if(pileAt === 'out'){
+    
+    if(pos.y < 0){
+        pos.y = pos.y * -1;
+        if(pos.y > cardHeight){
+            const atFoundation = getFoundation(i);
+            if(atFoundation === 'out'){
+                return pile;
+            }
+            return atFoundation;
+        }
+    }
+    const atPile = getPile(i);
+    if(atPile === 'out'){
         return pile;
     }
-    return pileAt;
+    return atPile;
 }
 
 

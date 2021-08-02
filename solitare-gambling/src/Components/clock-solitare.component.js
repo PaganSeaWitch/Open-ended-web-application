@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Countdown from 'react-countdown';
 import { suite1, suite2, suite3, suite4 } from './card-helper-functions.component';
+import { getStandardDeckOfCards, getRandomCard} from './game-helper-functions';
 const ClockSolitare = () => {
 	
     const { height, width } = useWindowDimensions();
@@ -132,11 +133,7 @@ const ClockSolitare = () => {
 
 
 
-    function getRandomInt(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-    }
+    
 
 
     const setRef = (countdown) => {
@@ -146,28 +143,7 @@ const ClockSolitare = () => {
     };
 
 
-    const getRandomCard = () =>{
-        let randNum = getRandomInt(0, cardsLeft.length);
-        let gottenString = cardsLeft[randNum];
-        const tempArray = cardsLeft;
-        tempArray.splice(randNum, 1);
-        setCardsLeft(tempArray)
-        console.log(gottenString);
-        if(gottenString.startsWith(suite1)){
-            return {suiteString: suite1, card: gottenString.substring(7)};
-        }
-        if(gottenString.startsWith(suite2)){
-            return {suiteString: suite2, card: gottenString.substring(4)};
-
-        }
-        if(gottenString.startsWith(suite3)){
-            return {suiteString: suite3, card: gottenString.substring(5)};
-
-        }
-        if(gottenString.startsWith(suite4)){
-            return {suiteString: suite4, card: gottenString.substring(5)};
-        }
-    }
+  
 
 
     const SimulateRound = () =>{
@@ -263,12 +239,12 @@ const ClockSolitare = () => {
                     return;
             }
         }
-        const newCard = getRandomCard();
-        const cardString = "" + newCard.card;
+        const newCard = getRandomCard(cardsLeft, setCardsLeft);
+        const cardString = "" + newCard.value;
         kingValues[currentKing] = cardString;
 
         const cardObject = {
-            "suite" : newCard.suiteString, 
+            "suite" : newCard.suite, 
             "value" : cardString,
             "reveal": true }
 
@@ -303,14 +279,8 @@ const ClockSolitare = () => {
     }
 
 
-    const setUpRound =()=>{
-        const tempArray = [];
-        for(const key in visibleCardDictionary){
-            for(let i = 1; i < 14; i++){
-                tempArray.push(key+i);
-            }
-        }
-        setCardsLeft(tempArray)
+    const setUpRound =()=>{        
+        setCardsLeft(getStandardDeckOfCards())
     }
 
 

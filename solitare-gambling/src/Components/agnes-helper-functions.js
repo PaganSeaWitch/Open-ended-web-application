@@ -32,7 +32,6 @@ export function CheckAgnesRulesForTransferingToPilesSingle(cardToCheck, cardToCh
 
 export function CheckAgnesRulesForTransferingToFoundation(cardToCheck, newFoundation, defaultValue){
     if(newFoundation.length === 1){
-        console.log("checking against default value:" +defaultValue)
         return checkValueIsSame(cardToCheck.value, defaultValue);
     }
     const cardToCheckAgainst = newFoundation[newFoundation.length-1];

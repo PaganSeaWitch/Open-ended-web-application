@@ -63,7 +63,7 @@ export function whereIsPileCard(pos, pile, containerHeight, containerWidth){
             return atFoundation;
         }
     }
-    const atPile = getPile(i);
+    const atPile = getPileName(i);
     if(atPile === 'out'){
         return pile;
     }
@@ -71,7 +71,7 @@ export function whereIsPileCard(pos, pile, containerHeight, containerWidth){
 }
 
 
-export function getPile(i){
+export function getPileName(i){
     switch(i){
         case(1):
             return pile1

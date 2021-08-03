@@ -6,13 +6,11 @@ import BlankCardSpace from './blank-card-space.component';
 import { useState, useEffect } from 'react';
 const PlayingCards = ({type, cards, currentPile, containerWidth, containerHeight, stopHandler, dragHandler, startHandler}) => {
 
-    const indexOfFirstDragCard = cards.findIndex((e) => e.draggable === true);
     const [pile,setPile] = useState([])
     let currentDragCardAmt = 0;
 
     useEffect(() => {
         setPile([...cards])
-        currentDragCardAmt = 0;
     }, [cards])
 
 

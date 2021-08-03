@@ -123,13 +123,6 @@ const ClockSolitare = () => {
     })
 
 
-    const [visibleCardDictionary] = useState({
-        [suite1] : suite1Dictionary,
-        [suite2] : suite2Dictionary,
-        [suite3] : suite3Dictionary,
-        [suite4] : suite4Dictionary
-    });
-
 
 
 

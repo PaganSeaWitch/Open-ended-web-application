@@ -4,18 +4,18 @@ import Grid from '@material-ui/core/Grid';
 import PlayingCard from "./card.component";
 import InvisibleCard from "./invisible-card.component";
 import PlayingCards from "./cards.component";
-import { pile1,pile2,pile3,pile4,pile5,pile6,pile7, whereIsPileCard } from "./pile-helper-functions";
+import { pile1,pile2,pile3,pile4,pile5,pile6,pile7, whereIsPileCard, getPileName} from "./pile-helper-functions";
 import { CheckAgnesRulesForTransferingToPiles, CheckAgnesRulesForTransferingToFoundation,CheckAgnesRulesForTransferingToPilesSingle } from "./agnes-helper-functions";
-import { suite1, suite2, suite3, suite4 } from './card-helper-functions.component';
 import { foundation1, foundation2, foundation3, foundation4, WhereIsFoundationCard} from './foundation-helper-functions.js'
 import GameOverDialogue from "./Game-over-dialogue.component";
-import {getStandardDeckOfCards, getRandomCard, getRandomCards, addCardProperties, getRandomInt, removePrexistingCards, addPrexistingCards} from "./game-helper-functions"
+import {getStandardDeckOfCards, getRandomCards, addCardProperties, removePrexistingCards, addPrexistingCards} from "./game-helper-functions"
 import BlankCardSpace from "./blank-card-space.component";
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from "@material-ui/core";
 import {ThemeProvider } from "@material-ui/core/styles";
 import { buttonTheme } from "./styler-helper";
 import _ from "lodash" // Import the entire lodash library
+import { getTitleOfValue } from "./card-helper-functions.component";
 const Agnes = () =>{
 
     const { height, width } = useWindowDimensions();
@@ -48,7 +48,9 @@ const Agnes = () =>{
     const [thirdDraw, setThirdDraw] = useState([])
     const [fourthDraw, setFourthDraw] = useState([])
     const [numOfDraws, setNumOfDraws] = useState(-1);
-
+    const [hints, setHints] = useState([])
+    const [getHint, setGetHint] = useState(false)
+    const [prevHint, setPrevHint] = useState('')
     const foundationDictionary ={
         [foundation1] : firstFoundation,
         [foundation2] : secondFoundation,
@@ -67,7 +69,7 @@ const Agnes = () =>{
         [pile7] : seventhPile,
     }
 
-
+//#region set and get pile/foundation functions
     const setPile = (tempArray, pile) =>{
         switch(pile){
             case(pile1):
@@ -265,7 +267,7 @@ const Agnes = () =>{
                 
         }
     }
-
+//#endregion
 
     const CheckForDragErrors = (tempArray) =>{
         let lastCard = tempArray[tempArray.length-1]
@@ -284,7 +286,7 @@ const Agnes = () =>{
         }
     }
 
-
+//#region transferFunctions
     const transferPileToPile = (tempArray, oldPile, newPile, index) =>{
         const deepCopy = _.cloneDeep(tempArray)
         setCurrentTurn(currentTurn +1);
@@ -325,7 +327,7 @@ const Agnes = () =>{
 
         const redoMove = addToFoundation(transferArray, newFoundation);
         const turnArray = turns;
-        if(currentTurn +1 != turns.length){
+        if(currentTurn +1 !== turns.length){
             turnArray.splice(currentTurn+1,turnArray.length);
         }
         setCurrentTurn(currentTurn + 1)
@@ -383,8 +385,9 @@ const Agnes = () =>{
         setFoundation(oldArray, oldFoundation);
 
     }
+//#endregion
 
-
+//#region stopHandlers
     const pileCardStopHandler = (data, cardPosition) =>{
         let newLocation = whereIsPileCard({x:data.x, y:data.y},cardPosition.pileName, containerHeight, containerWidth);
         const tempArray = pileDictionary[cardPosition.pileName];
@@ -442,8 +445,9 @@ const Agnes = () =>{
             console.log("Error:No Pile or foundation Found");
         }
     }
+//#endregion
 
-
+//#region GameSetters
     const newGame = () =>{
         setFirstFoundation([{}])
         setSecondFoundation([{}])
@@ -511,7 +515,7 @@ const Agnes = () =>{
         addToPile(pile6Cards, pile6);
         addToPile(pile7Cards, pile7);
     }
-
+//#endregion
 
     const addMoreCards = () =>{
         let newDraw = false;
@@ -553,7 +557,7 @@ const Agnes = () =>{
                     setThirdDraw(cardArray);
                     break;
                 case(3):
-                    setThirdDraw(cardArray);
+                    setFourthDraw(cardArray);
                     break;
                 default:
                     break;
@@ -602,6 +606,7 @@ const Agnes = () =>{
 
     }
 
+//#region redoUndoFunctions
 
     const undoMove = () =>{
         console.log(currentTurn)
@@ -658,7 +663,94 @@ const Agnes = () =>{
         setCurrentTurn(currentTurn + 1)
 
     }
+//#endregion
 
+//#region hintFunctions
+
+    const checkPiles = (movingPile, stayingPile) =>{
+        const newHints = []
+        if(movingPile === stayingPile){
+            return newHints
+        }
+        for(let i = movingPile.length -1; i > -1; i--){
+            if(movingPile[i].draggable !== true){
+                return newHints
+            }
+            if(CheckAgnesRulesForTransferingToPiles(movingPile[i], stayingPile)){
+                newHints.push("move the "+ getTitleOfValue(movingPile[i].value) + " of " + movingPile[i].suite + "s to the " + getTitleOfValue(stayingPile[stayingPile.length-1].value) + " of " + stayingPile[stayingPile.length-1].suite + "s.");
+            }
+        }
+
+        return newHints;
+    }
+
+    const checkFoundations = (movingPile, foundation) =>{
+        const newHints = []
+        if(movingPile === foundation){
+            return newHints
+        }
+        
+        if(movingPile[movingPile.length-1].draggable !== true){
+            return newHints
+        }
+        if(CheckAgnesRulesForTransferingToFoundation(movingPile[movingPile.length-1], foundation,currentLeadingValue)){
+            if(foundation.length === 1){
+                newHints.push("move the "+ getTitleOfValue(movingPile[movingPile.length-1].value) + " of " + movingPile[movingPile.length-1].suite + "s to an empty foundation slot.")
+            }
+            else{
+                newHints.push("move the "+ getTitleOfValue(movingPile[movingPile.length-1].value) + " of " + movingPile[movingPile.length-1].suite + "s to the " + getTitleOfValue(foundation[foundation.length-1].value) + " of " + foundation[foundation.length-1].suite + "s.");
+            }
+        }
+        return newHints;
+    }
+
+    const getPossibleMoves= (pile) =>{
+        const hintsForPile = [];
+        hintsForPile.push(...checkPiles(pile, firstPile))
+        hintsForPile.push(...checkPiles(pile, secondPile))
+        hintsForPile.push(...checkPiles(pile, thirdPile))
+        hintsForPile.push(...checkPiles(pile, fourthPile))
+        hintsForPile.push(...checkPiles(pile, fifthPile))
+        hintsForPile.push(...checkPiles(pile, sixthPile))
+        hintsForPile.push(...checkPiles(pile, seventhPile))
+        hintsForPile.push(...checkFoundations(pile, firstFoundation))
+        hintsForPile.push(...checkFoundations(pile, secondFoundation))
+        hintsForPile.push(...checkFoundations(pile, thirdFoundation))
+        hintsForPile.push(...checkFoundations(pile, fourthFoundation))
+        return hintsForPile;
+    }
+
+
+    const addHints = () =>{
+        for(let i = 1; i < 8; i++){
+            hints.splice(i-1, 1);
+            hints.unshift(getPossibleMoves(getPile(getPileName(i))))
+
+        }
+        setHints([...hints]);
+    }
+    const getHintForDialogue = () =>{
+        for(let i = 0; i < hints.length;i++){
+            let hintSection = hints[i];
+            if(typeof(hintSection) !== 'undefined' && hintSection.length !== 0){
+                return hintSection[0];   
+            }
+            
+        }
+        if(cardsLeft.length !== 0){
+            return "draw cards"
+        }
+        return "No hints avalible, try moving cards around or restart/start new game"
+    }
+
+    const addPrevHint = () =>{
+        setPrevHint = hint;
+    }
+
+    const hint = getHintForDialogue();
+//#endregion
+
+//#region useEffects
 
     useEffect(() => {
         if(firstFoundation.length !== 14){
@@ -685,7 +777,15 @@ const Agnes = () =>{
         }
     }, [gameStart])
 
+
+    useEffect(() => {
+        if(typeof(currentLeadingValue) !== 'undefined'){
+            addHints();
+        }
+    }, [firstPile,secondPile,thirdPile,fourthPile,fifthPile,sixthPile,seventhPile])
     
+//#endregion
+
 
     const useStyles = makeStyles({
         root: {
@@ -719,6 +819,7 @@ const Agnes = () =>{
     });
     const classes = useStyles();
 
+
     const handleButtonClick =(type) =>{
         switch(type){
             case("New Game"):
@@ -734,15 +835,18 @@ const Agnes = () =>{
                 redoMove();
                 break;
             case("Hint"):
+                setGetHint(true);
                 break;
             default:
                 console.log("type")
                 break;
         }
     }
+    
+    
     return (
         <div className={classes.outer}>
-                <header className={classes.title}>AGNES SOLITARE</header>
+                <header className={classes.title}>AISLERIOT AGNES SOLITARE</header>
                 <Grid container justifyContent="center" spacing={2}>
                     <Grid item>
                         <ThemeProvider theme ={buttonTheme}>
@@ -825,6 +929,7 @@ const Agnes = () =>{
                 <GameOverDialogue title={"The Game Is OVER!"} open={gameEnd} setOpen={setGameEnd} onConfirm={resetGame}> The Game is Over! Would you like to Reset the Game? You can do so later.</GameOverDialogue>
                 <GameOverDialogue title={"Reset Game?"} open={manuallyResetGame} setOpen={setManuallyResetGame} onConfirm={resetGame}> Would you like to Reset the Game?</GameOverDialogue>
                 <GameOverDialogue title={"start new Game?"} open={manuallyStartNewGame} setOpen={setManuallyStartNewGame} onConfirm={newGame}> Would you like to start a new Game?</GameOverDialogue>
+                <GameOverDialogue title={"Hint"} open={getHint} setOpen={setGetHint} onConfirm={addPrevHint}>{hint}</GameOverDialogue>
 
             </div>
         </div>

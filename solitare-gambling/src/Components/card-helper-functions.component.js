@@ -22,6 +22,37 @@ export function getCardWidth(containerWidth){
     return tempWidth
 }
 
+export function getRoyalValue(value){
+    let string = value +""
+    switch (string) {
+        case "13":
+            return "K";
+        case "12":
+            return "Q";
+        case "11":
+            return "J";
+        case "1":
+            return "A";
+        default:
+            return value;
+    }
+}
+
+export function getTitleOfValue(value){
+    let string = value +""
+    switch (string) {
+        case "13":
+            return "King";
+        case "12":
+            return "Queen";
+        case "11":
+            return "Jack";
+        case "1":
+            return "Ace";
+        default:
+            return value;
+    }
+}
 export const suite1 = "diamond"
 export const suite2 = "club"
 export const suite3 = "heart"

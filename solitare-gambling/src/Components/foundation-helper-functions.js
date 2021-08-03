@@ -1,5 +1,5 @@
 import { getCardHeight, getCardWidth, getAdjustment } from "./card-helper-functions.component";
-import { getPile } from "./pile-helper-functions";
+import { getPileName } from "./pile-helper-functions";
 export const foundation1 = 'firstFoundation'
 export const foundation2 = 'secondFoundation'
 export const foundation3 = 'thirdFoundation'
@@ -54,7 +54,7 @@ export function WhereIsFoundationCard(pos, foundationName, containerHeight, cont
         }
         return atFoundation;
     }
-    const atPile = getPile(i);
+    const atPile = getPileName(i);
     if(atPile === 'out'){
         return foundationName;
     }

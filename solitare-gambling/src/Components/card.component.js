@@ -3,8 +3,7 @@ import calculateTextWidth from "calculate-text-width"
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
-import { fontString, getCardHeight, getCardWidth, getAdjustment} from './card-helper-functions.component';
-import { useEffect } from 'react';
+import { fontString, getCardHeight, getCardWidth, getAdjustment, getRoyalValue} from './card-helper-functions.component';
 const PlayingCard = ({card, containerWidth, containerHeight, stack}) => {
     //const fontString = "500 normal 16px Dejavu Serif"
 
@@ -24,15 +23,14 @@ const PlayingCard = ({card, containerWidth, containerHeight, stack}) => {
 
 
     const getTopValueCardPart = () =>{
-
-        return linebreak + getRoyalValue() + ".".repeat(getOptLengthForCardValue() <= 0 ? 1 : getOptLengthForCardValue())
+        return linebreak + getRoyalValue(card.value) + ".".repeat(getOptLengthForCardValue() <= 0 ? 1 : getOptLengthForCardValue())
 
     }
 
 
     const getBottomValueCardPart = () =>{
 
-        return linebreak + ".".repeat(getOptLengthForCardValue() <= 0 ? 1 : getOptLengthForCardValue()) + getRoyalValue()
+        return linebreak + ".".repeat(getOptLengthForCardValue() <= 0 ? 1 : getOptLengthForCardValue()) + getRoyalValue(card.value)
 
     }
 
@@ -64,18 +62,6 @@ const PlayingCard = ({card, containerWidth, containerHeight, stack}) => {
     }
     
 
-    const getRoyalValue = () => {
-        switch (card.value) {
-            case "13":
-                return "K";
-            case "12":
-                return "Q";
-            case "11":
-                return "J";
-            default:
-                return card.value;
-        }
-    }
 
 
     const getMiddleValueCardPart = () =>{
@@ -163,12 +149,12 @@ const PlayingCard = ({card, containerWidth, containerHeight, stack}) => {
     const getOptLengthForCardValue = () =>{
         const widthOfLine = cardWidth
         let periodAmount = 0;
-        let widthOfCard  =  calculateTextWidth(getRoyalValue() + ".".repeat(periodAmount),fontString );
+        let widthOfCard  =  calculateTextWidth(getRoyalValue(card.value) + ".".repeat(periodAmount),fontString );
 
 
         while (widthOfCard < widthOfLine) {
             periodAmount++;
-            let string =  getRoyalValue() + ".".repeat(periodAmount)   
+            let string =  getRoyalValue(card.value) + ".".repeat(periodAmount)   
             widthOfCard = calculateTextWidth(string,fontString)
             
         }

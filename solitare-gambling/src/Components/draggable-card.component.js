@@ -17,7 +17,6 @@ const DraggableCard = ({id, z, card, currentPile, containerWidth, containerHeigh
 
     const defaultStopHandler = () =>{
         console.log("default stop handler used");
-        console.log(z)
     }
 
     const defaultDragHandler = () =>{
@@ -25,8 +24,7 @@ const DraggableCard = ({id, z, card, currentPile, containerWidth, containerHeigh
     }
     const defaultStartHandler = () =>{
         console.log("default start handler used");
-        console.log(newPosition);
-        console.log(z)
+
     }
 
     const classes = useStyles();

@@ -54,6 +54,21 @@ export function getRandomCards(amt, cardsLeft, setCardsLeft){
     return cardArray;
 }
 
+export function removePrexistingCards(cards, array, setArray){
+    const oldCards = array;
+    for(let i = 0; i < cards.length;i++){
+        const cardString = deconstructCard(cards[i]);
+        oldCards.splice(oldCards.indexOf(cardString), 1);
+
+    }
+    console.log(oldCards)
+    setArray([...oldCards]);
+}
+
+function deconstructCard(card){
+    return card.suite + card.value;
+}
+
 export function createCard(string){
     if(string.startsWith(suite1)){
         return {suite: suite1, value: string.substring(7)};
@@ -72,6 +87,20 @@ export function createCard(string){
     else{
         return null;
     }
+}
+
+export function addPrexistingCards(cards, array, setArray){
+    const oldCards = array;
+    if(oldCards.indexOf(cards[0]) !== -1)
+    {
+        return;
+    }
+    for(let i = 0; i < cards.length;i++){
+        const cardString = deconstructCard(cards[i]);
+        oldCards.push(cardString);
+    }
+
+    setArray([...oldCards]);
 }
 
 export function addCardProperties(cards){

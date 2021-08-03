@@ -5,13 +5,17 @@ import PlayingCard from "./card.component";
 import InvisibleCard from "./invisible-card.component";
 import PlayingCards from "./cards.component";
 import { pile1,pile2,pile3,pile4,pile5,pile6,pile7, whereIsPileCard } from "./pile-helper-functions";
-import { CheckAgnesRulesForTransferingToPiles, CheckAgnesRulesForTransferingToFoundation } from "./agnes-helper-functions";
+import { CheckAgnesRulesForTransferingToPiles, CheckAgnesRulesForTransferingToFoundation,CheckAgnesRulesForTransferingToPilesSingle } from "./agnes-helper-functions";
 import { suite1, suite2, suite3, suite4 } from './card-helper-functions.component';
 import { foundation1, foundation2, foundation3, foundation4, WhereIsFoundationCard} from './foundation-helper-functions.js'
 import GameOverDialogue from "./Game-over-dialogue.component";
-import {getStandardDeckOfCards, getRandomCard, getRandomCards, addCardProperties, getRandomInt} from "./game-helper-functions"
+import {getStandardDeckOfCards, getRandomCard, getRandomCards, addCardProperties, getRandomInt, removePrexistingCards, addPrexistingCards} from "./game-helper-functions"
 import BlankCardSpace from "./blank-card-space.component";
-
+import { makeStyles } from '@material-ui/core/styles';
+import { Button } from "@material-ui/core";
+import {ThemeProvider } from "@material-ui/core/styles";
+import { buttonTheme } from "./styler-helper";
+import _ from "lodash" // Import the entire lodash library
 const Agnes = () =>{
 
     const { height, width } = useWindowDimensions();
@@ -20,15 +24,14 @@ const Agnes = () =>{
     const containerWidth = width  - 300
 
     const [cardsLeft, setCardsLeft] = useState(getStandardDeckOfCards)
+    const [thisGamesCards, setThisGamesCards] = useState([])
     const [gameEnd, setGameEnd] = useState(false);
     const [gameStart, setGameStart] = useState(true)
     const [firstFoundation, setFirstFoundation] = useState([{}]);
     const [secondFoundation, setSecondFoundation] = useState([{}])
     const [thirdFoundation, setThirdFoundation] = useState([{}]);
     const [fourthFoundation, setFourthFoundation] = useState([{}]);
-
     const [currentLeadingValue, setCurrentLeadingValue] = useState(1)
-
     const [firstPile, setFirstPile] = useState([{}]);
     const [secondPile, setSecondPile] = useState([{}]);
     const [thirdPile, setThirdPile] = useState([{}]);
@@ -36,7 +39,15 @@ const Agnes = () =>{
     const [fifthPile, setFifthPile] = useState([{}]);
     const [sixthPile, setSixthPile] = useState([{}]);
     const [seventhPile, setSeventhPile] = useState([{}]);
-
+    const [manuallyResetGame,setManuallyResetGame] = useState(false);
+    const [manuallyStartNewGame,setManuallyStartNewGame] = useState(false);
+    const [turns, setTurns] = useState([])
+    const [currentTurn, setCurrentTurn] = useState(-1)
+    const [firstDraw, setFirstDraw] = useState([])
+    const [secondDraw, setSecondDraw] = useState([])
+    const [thirdDraw, setThirdDraw] = useState([])
+    const [fourthDraw, setFourthDraw] = useState([])
+    const [numOfDraws, setNumOfDraws] = useState(-1);
 
     const foundationDictionary ={
         [foundation1] : firstFoundation,
@@ -87,33 +98,80 @@ const Agnes = () =>{
     }
 
 
-    const addToPile = (tempArray, pile) =>{
+    const addToPile = (tempArray, pile, stopDrag) =>{
+        let array;
         switch(pile){
             case(pile1):
-                setFirstPile([...firstPile,...tempArray]);
+                array = firstPile;
+                if(stopDrag){
+                    array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:x.revealCard, draggable:false}})
+                }
+                setFirstPile([...array,...tempArray]);
                 break;
             case(pile2):
-                setSecondPile([...secondPile,...tempArray]);
+                array = secondPile;
+                if(stopDrag){
+                    array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:x.revealCard, draggable:false}})
+
+                }
+                setSecondPile([...array,...tempArray]);
                 break;
             case(pile3):
-                setThirdPile([...thirdPile,...tempArray]);
+                array = thirdPile;
+
+                if(stopDrag){
+
+                    array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:x.revealCard, draggable:false}})
+
+                }
+                setThirdPile([...array,...tempArray]);
                 break;
             case(pile4):
-                setFourthPile([...fourthPile,...tempArray]);
+                array = fourthPile;
+
+                if(stopDrag){
+
+                    array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:x.revealCard, draggable:false}})
+
+                }
+                setFourthPile([...array,...tempArray]);
                 break;
             case(pile5):
-                setFifthPile([...fifthPile,...tempArray]);
+                array = fifthPile;
+
+                if(stopDrag){
+
+                    array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:x.revealCard, draggable:false}})
+
+                }
+                setFifthPile([...array,...tempArray]);
                 break;
             case(pile6):
-                setSixthPile([...sixthPile,...tempArray]);
+                array = sixthPile;
+
+                if(stopDrag){
+
+                    array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:x.revealCard, draggable:false}})
+
+                }
+                setSixthPile([...array,...tempArray]);
                 break;
             case(pile7):
-                setSeventhPile([...seventhPile,...tempArray]);
+                array = seventhPile;
+
+                if(stopDrag){
+
+                    array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:x.revealCard, draggable:false}})
+
+                }
+                setSeventhPile([...array,...tempArray]);
                 break;
             default:
                 console.log(pile)
                 break;
         }
+        return [...array,...tempArray]
+
     }
 
 
@@ -145,31 +203,29 @@ const Agnes = () =>{
             case(foundation1):
                 array = firstFoundation;
                 array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:true, draggable:false}})
-                console.log(array)
                 setFirstFoundation([...array,...tempArray])
                 break;
             case(foundation2):
                  array = secondFoundation;
                  array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:true, draggable:false}})
-                 console.log(array)
                 setSecondFoundation([...array,...tempArray])
                 break;
             case(foundation3):
                 array = thirdFoundation;
                 array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:true, draggable:false}})
-                console.log(array)
                 setThirdFoundation([...array,...tempArray])
                 break;
             case(foundation4):
                 array = fourthFoundation;
                 array = array.map( x => {return {suite:x.suite, value:x.value, revealCard:true, draggable:false}})
-                console.log(array)
                 setFourthFoundation([...array,...tempArray])
                 break;
             default:
                 console.log(foundationName)
                 break;
         }
+        return [...array,...tempArray]
+
     }
 
 
@@ -211,52 +267,121 @@ const Agnes = () =>{
     }
 
 
+    const CheckForDragErrors = (tempArray) =>{
+        let lastCard = tempArray[tempArray.length-1]
+        for(let i = tempArray.length-2; i> -1; i--){
+            const currentCard = tempArray[i];
+            if(currentCard.revealCard === true && currentCard.draggable === false){
+                if(CheckAgnesRulesForTransferingToPilesSingle(lastCard, currentCard)){
+                    currentCard.draggable = true;
+                    tempArray[i] = currentCard;
+                }
+            }
+            if(currentCard.revealCard === false){
+                break;
+            }
+            lastCard = currentCard;
+        }
+    }
+
+
     const transferPileToPile = (tempArray, oldPile, newPile, index) =>{
-        
+        const deepCopy = _.cloneDeep(tempArray)
+        setCurrentTurn(currentTurn +1);
         const transferArray = tempArray.slice(index);
         const oldArray = tempArray.slice(0, index);
+        
         if(oldArray.length !== 1){
-            oldArray[oldArray.length-1].draggable = true;
-            oldArray[oldArray.length-1].revealCard = true;
+            const card = oldArray[oldArray.length-1];
+            card.draggable = true;
+            card.revealCard = true;
+            oldArray[oldArray.length-1] = card;
         }
+
+        CheckForDragErrors(oldArray);
+        const redoMove =addToPile(transferArray, newPile);
+        const turnArray = turns;
+
+        if(currentTurn +1 !== turns.length){
+            turnArray.splice(currentTurn+1,turnArray.length);
+        }
+        setTurns([...turnArray, {undoFirst:{location:oldPile, cards:deepCopy}, undoSecond:{location:newPile, cards:getPile(newPile)}, redoFirst:{location:oldPile, cards:oldArray}, redoSecond:{location:newPile, cards:redoMove}}])
         setPile(oldArray, oldPile);
-        addToPile(transferArray, newPile);
+
     }
 
 
     const transferPileToFoundation = (tempArray, oldPile, newFoundation) =>{
+        const deepCopy = _.cloneDeep(tempArray)
         const transferArray = tempArray.slice(tempArray.length-1);
         const oldArray = tempArray.slice(0, tempArray.length-1);
+        
         if(oldArray.length !== 1){
-            oldArray[oldArray.length-1].draggable = true;
-            oldArray[oldArray.length-1].revealCard = true;
+            const card = oldArray[oldArray.length-1];
+            card.draggable = true;
+            card.revealCard = true;
+            oldArray[oldArray.length-1] = card;
         }
+
+        const redoMove = addToFoundation(transferArray, newFoundation);
+        const turnArray = turns;
+        if(currentTurn +1 != turns.length){
+            turnArray.splice(currentTurn+1,turnArray.length);
+        }
+        setCurrentTurn(currentTurn + 1)
+        
+        setTurns([...turnArray, {undoFirst:{location:oldPile, cards:deepCopy}, undoSecond:{location:newFoundation, cards:getFoundation(newFoundation)}, redoFirst:{location:oldPile, cards:oldArray}, redoSecond:{location:newFoundation, cards:redoMove}}])
         setPile(oldArray, oldPile);
-        addToFoundation(transferArray, newFoundation);
+
     }
 
 
     const transferFoundationToPile = (tempArray, oldFoundation, newPile) =>{
+        const deepCopy = _.cloneDeep(tempArray)
         const transferArray = tempArray.slice(tempArray.length-1);
         const oldArray = tempArray.slice(0, tempArray.length-1);
+        
         if(oldArray.length !== 1){
-            oldArray[oldArray.length-1].draggable = true;
-            oldArray[oldArray.length-1].revealCard = true;
+            const card = oldArray[oldArray.length-1];
+            card.draggable = true;
+            card.revealCard = true;
+            oldArray[oldArray.length-1] = card;
         }
+        
+        const redoMove = addToPile(transferArray, newPile);
+        const turnArray = turns;
+
+        if(currentTurn +1 !== turns.length){
+            turnArray.splice(currentTurn+1,turnArray.length);
+        }
+        setCurrentTurn(currentTurn +1);
+        setTurns([...turnArray, {undoFirst:{location:oldFoundation, cards:deepCopy}, undoSecond:{location:newPile, cards:getPile(newPile)}, redoFirst:{location:oldFoundation, cards:oldArray}, redoSecond:{location:newPile, cards:redoMove}}])
         setFoundation(oldArray, oldFoundation);
-        addToPile(transferArray, newPile);
+
     }
 
 
     const transferFoundationToFoundation = (tempArray, oldFoundation, newFoundation) =>{
+        const deepCopy = _.cloneDeep(tempArray)
+        setCurrentTurn(currentTurn +1);
         const transferArray = tempArray.slice(tempArray.length-1)
         const oldArray = tempArray.slice(0, tempArray.length-1)
+        
         if(oldArray.length !== 1){
-            oldArray[oldArray.length-1].draggable = true;
-            oldArray[oldArray.length-1].revealCard = true;
+            const card = oldArray[oldArray.length-1];
+            card.draggable = true;
+            card.revealCard = true;
+            oldArray[oldArray.length-1] = card;
         }
+        const redoMove =addToFoundation(transferArray, newFoundation);
+        const turnArray = turns;
+
+        if(currentTurn +1 !== turns.length){
+            turnArray.splice(currentTurn+1,turnArray.length);
+        }
+        setTurns([...turnArray, {undoFirst:{location:oldFoundation, cards:deepCopy}, undoSecond:{location:newFoundation, cards:getFoundation(newFoundation)}, redoFirst:{location:oldFoundation, cards:oldArray}, redoSecond:{location:newFoundation, cards:redoMove}}])
         setFoundation(oldArray, oldFoundation);
-        addToFoundation(transferArray, newFoundation);
+
     }
 
 
@@ -276,8 +401,6 @@ const Agnes = () =>{
         }
         const foundation = getFoundation(newLocation)
         const pile = getPile(newLocation)
-        console.log(foundation)
-        console.log(pile)
         if(newLocation === cardPosition.pileName){
             setFoundation(tempArray, cardPosition.pileName);
         }
@@ -294,7 +417,7 @@ const Agnes = () =>{
 
 
     const foundationCardStopHandler = (data, cardPosition) =>{
-        const tempArray = foundationDictionary[cardPosition.pileName];
+        const tempArray = foundationDictionary[cardPosition.pileName]
 
         for(let i = 0; i < tempArray.length; i++){
             if(i >= cardPosition.index){
@@ -304,11 +427,8 @@ const Agnes = () =>{
             }
         }
         let newLocation = WhereIsFoundationCard({x:data.x, y:data.y}, cardPosition.pileName, containerHeight, containerWidth)
-        console.log(newLocation)
         const foundation = getFoundation(newLocation)
         const pile = getPile(newLocation)
-        console.log(foundation)
-        console.log(pile)
         if(newLocation === cardPosition.pileName){
             setFoundation(tempArray, cardPosition.pileName);
         }
@@ -323,6 +443,25 @@ const Agnes = () =>{
         }
     }
 
+
+    const newGame = () =>{
+        setFirstFoundation([{}])
+        setSecondFoundation([{}])
+        setThirdFoundation([{}])
+        setFourthFoundation([{}])
+        setFirstPile([{}])
+        setSecondPile([{}])
+        setThirdPile([{}])
+        setFourthPile([{}])
+        setFifthPile([{}])
+        setSixthPile([{}])
+        setSeventhPile([{}])
+        setGameStart(true)
+        setCardsLeft(getStandardDeckOfCards());
+        setThisGamesCards([])
+    }
+
+
     const resetGame = () =>{
         setFirstFoundation([{}])
         setSecondFoundation([{}])
@@ -336,11 +475,23 @@ const Agnes = () =>{
         setSixthPile([{}])
         setSeventhPile([{}])
         setGameStart(true)
+        setCardsLeft(getStandardDeckOfCards());
+
     }
 
+
     const startGame = () =>{
-        const cards = getRandomCards(29, cardsLeft, setCardsLeft);
-        console.log(cards.length)
+        let cards;
+        if(thisGamesCards.length !== 0){
+            cards = thisGamesCards;
+            removePrexistingCards(cards,cardsLeft, setCardsLeft)
+            setThisGamesCards([...cards])
+        }
+        else{
+            cards = getRandomCards(29, cardsLeft, setCardsLeft);
+            setThisGamesCards([...cards]);
+        }
+        
         const foundation1Cards = addCardProperties(cards.splice(0,1))
 
         addToFoundation(foundation1Cards, foundation1);
@@ -361,15 +512,67 @@ const Agnes = () =>{
         addToPile(pile7Cards, pile7);
     }
 
+
     const addMoreCards = () =>{
-        console.log("adding more cards")
-        const cards = getRandomCards(7, cardsLeft, setCardsLeft);
-        console.log(cards)
+        let newDraw = false;
+        let cards = [];
+        
+        switch(numOfDraws + 1){
+            case(0):
+                cards = _.cloneDeep(firstDraw);
+                break;
+            case(1):
+                cards = _.cloneDeep(secondDraw);
+                break;
+            case(2):
+                cards = _.cloneDeep(thirdDraw);
+                break;
+            case(3):
+                cards = _.cloneDeep(fourthDraw);
+                break;
+            default:
+                break;
+        }
+        removePrexistingCards(cards, cardsLeft, setCardsLeft)
+
+        const everyPile = [_.cloneDeep(firstPile), _.cloneDeep(secondPile), _.cloneDeep(thirdPile), _.cloneDeep(fourthPile), _.cloneDeep(fifthPile), _.cloneDeep(sixthPile), _.cloneDeep(seventhPile)]
+        let cardArray = []
+
+        if(cards.length === 0)
+        {
+            cards = getRandomCards(7, cardsLeft, setCardsLeft);
+            cardArray = _.cloneDeep(cards)
+            switch(numOfDraws +1){
+                case(0):
+                    setFirstDraw(cardArray);
+                    break;
+                case(1):
+                    setSecondDraw(cardArray);
+                    break;
+                case(2):
+                    setThirdDraw(cardArray);
+                    break;
+                case(3):
+                    setThirdDraw(cardArray);
+                    break;
+                default:
+                    break;
+                
+            }
+            setCurrentTurn(currentTurn + 1)
+            newDraw = true;
+            
+        }
+        console.log(numOfDraws + 1)
+        setNumOfDraws(numOfDraws + 1)
+
         const pile1Cards = addCardProperties(cards.splice(0,1));
         const pile2Cards = addCardProperties(cards.splice(0,1));
-        addToPile(pile1Cards, pile1);
-        addToPile(pile2Cards, pile2);
-       
+        const redo1 = addToPile(pile1Cards, pile1,!CheckAgnesRulesForTransferingToPiles(pile1Cards[0],firstPile));
+        const redo2 = addToPile(pile2Cards, pile2,!CheckAgnesRulesForTransferingToPiles(pile2Cards[0],secondPile));
+        const turnArray = turns;
+
+
         if(cards.length !== 0){
             const pile3Cards = addCardProperties(cards.splice(0,1));
             const pile4Cards = addCardProperties(cards.splice(0,1));
@@ -377,13 +580,85 @@ const Agnes = () =>{
             const pile6Cards = addCardProperties(cards.splice(0,1));
             const pile7Cards = addCardProperties(cards.splice(0,1));
 
-            addToPile(pile3Cards, pile3);
-            addToPile(pile4Cards, pile4);
-            addToPile(pile5Cards, pile5);
-            addToPile(pile6Cards, pile6);
-            addToPile(pile7Cards, pile7);
+            const redo3 = addToPile(pile3Cards, pile3,!CheckAgnesRulesForTransferingToPiles(pile3Cards[0],thirdPile));
+            const redo4 = addToPile(pile4Cards, pile4,!CheckAgnesRulesForTransferingToPiles(pile4Cards[0],fourthPile));
+            const redo5 = addToPile(pile5Cards, pile5,!CheckAgnesRulesForTransferingToPiles(pile5Cards[0],fifthPile));
+            const redo6 = addToPile(pile6Cards, pile6,!CheckAgnesRulesForTransferingToPiles(pile6Cards[0],sixthPile));
+            const redo7 = addToPile(pile7Cards, pile7,!CheckAgnesRulesForTransferingToPiles(pile7Cards[0],seventhPile));
+            const everyRedoPile = [redo1, redo2, redo3, redo4, redo5, redo6, redo7]
+            if(newDraw){
+                console.log("new Draw!")
+                setTurns([...turnArray, {undoFirst:{location:"deck", cards:cardArray}, undoSecond:{location:"allPiles", cards:everyPile}, redoFirst:{location:"deck", cards:cardArray}, redoSecond:{location:"allPiles", cards:everyRedoPile}}])
+            }
+
         }
+        else{
+            const somePiles = [redo1, redo2]
+            if(newDraw){
+                console.log("new Draw!")
+                setTurns([...turnArray, {undoFirst:{location:"deck", cards:cardArray}, undoSecond:{location:"allPiles", cards:everyPile}, redoFirst:{location:"deck", cards:cardArray}, redoSecond:{location:"somePiles", cards:somePiles}}])
+            }
+        }
+
     }
+
+
+    const undoMove = () =>{
+        console.log(currentTurn)
+        if(currentTurn === -1){
+            resetGame();
+            return;
+        }
+        if(turns[currentTurn].undoFirst.location === "deck"){
+            addPrexistingCards(turns[currentTurn].undoFirst.cards,cardsLeft, setCardsLeft)
+            setPile(turns[currentTurn].undoSecond.cards[0],pile1)
+            setPile(turns[currentTurn].undoSecond.cards[1],pile2)
+            setPile(turns[currentTurn].undoSecond.cards[2],pile3)
+            setPile(turns[currentTurn].undoSecond.cards[3],pile4)
+            setPile(turns[currentTurn].undoSecond.cards[4],pile5)
+            setPile(turns[currentTurn].undoSecond.cards[5],pile6)
+            setPile(turns[currentTurn].undoSecond.cards[6],pile7)
+            setCurrentTurn(currentTurn - 1)
+            setNumOfDraws(numOfDraws - 1);
+            return;
+        }
+        setPile(turns[currentTurn].undoFirst.cards, turns[currentTurn].undoFirst.location)
+        setFoundation(turns[currentTurn].undoFirst.cards, turns[currentTurn].undoFirst.location)
+        setPile(turns[currentTurn].undoSecond.cards, turns[currentTurn].undoSecond.location)
+        setFoundation(turns[currentTurn].undoSecond.cards, turns[currentTurn].undoSecond.location)
+        setCurrentTurn(currentTurn - 1)
+    }
+
+
+    const redoMove = () =>{
+
+        if(currentTurn +1 === turns.length){
+            console.log("NOPE")
+            return;
+        }
+        if(turns[currentTurn+1].redoFirst.location === "deck"){
+            removePrexistingCards(turns[currentTurn+1].redoFirst.cards,cardsLeft, setCardsLeft)
+            setPile(turns[currentTurn+1].redoSecond.cards[0],pile1)
+            setPile(turns[currentTurn+1].redoSecond.cards[1],pile2)
+            if(turns[currentTurn+1].redoSecond.location !== "somePiles"){
+                setPile(turns[currentTurn+1].redoSecond.cards[2],pile3)
+                setPile(turns[currentTurn+1].redoSecond.cards[3],pile4)
+                setPile(turns[currentTurn+1].redoSecond.cards[4],pile5)
+                setPile(turns[currentTurn+1].redoSecond.cards[5],pile6)
+                setPile(turns[currentTurn+1].redoSecond.cards[6],pile7)
+            }
+            setNumOfDraws(numOfDraws + 1);
+            setCurrentTurn(currentTurn + 1)
+            return;
+        }
+        setPile(turns[currentTurn+1].redoFirst.cards, turns[currentTurn+1].redoFirst.location)
+        setFoundation(turns[currentTurn+1].redoFirst.cards, turns[currentTurn+1].redoFirst.location)
+        setPile(turns[currentTurn+1].redoSecond.cards, turns[currentTurn+1].redoSecond.location)
+        setFoundation(turns[currentTurn+1].redoSecond.cards, turns[currentTurn+1].redoSecond.location)
+        setCurrentTurn(currentTurn + 1)
+
+    }
+
 
     useEffect(() => {
         if(firstFoundation.length !== 14){
@@ -401,6 +676,8 @@ const Agnes = () =>{
         setGameEnd(true);
     }, [firstFoundation,secondFoundation,thirdFoundation,fourthFoundation])
 
+
+
     useEffect(() => {
         if(gameStart === true){
             setGameStart(false)
@@ -408,58 +685,148 @@ const Agnes = () =>{
         }
     }, [gameStart])
 
+    
+
+    const useStyles = makeStyles({
+        root: {
+          maxWidth: containerWidth,
+          maxHeight:containerHeight,
+          "background-color": "lightslategray",
+          marginTop:"45px",
+          marginLeft:"auto",
+          marginRight:"auto",
+          overflow:"visible",
+        },
+        outer: {
+            minWidth:width,
+            minHeight:height,
+            "background-color": "lightslategray",
+            margin:"auto",
+            overflow:"hidden",
+          
+        },
+        title: {
+          fontSize: 35,
+          textAlign:"center",
+          marginTop:"10px",
+          marginLeft:"auto",
+          marginRight:"auto",
+          marginBottom:"auto",
+        },
+        pos: {
+          marginBottom: 12,
+        },
+    });
+    const classes = useStyles();
+
+    const handleButtonClick =(type) =>{
+        switch(type){
+            case("New Game"):
+                setManuallyStartNewGame(true);
+                break;
+            case("Reset Game"):
+                setManuallyResetGame(true);
+                break;
+            case("Undo Move"):
+                undoMove();
+                break;
+            case("Redo Move"):
+                redoMove();
+                break;
+            case("Hint"):
+                break;
+            default:
+                console.log("type")
+                break;
+        }
+    }
     return (
-        <div>
-            <Grid container justifyContent="center" spacing={5}>
-                <Grid item>
-                    {cardsLeft.length !== 0 ?<div style={{'cursor':"pointer"}} onClick={addMoreCards}>
-                    <PlayingCard  card={{suite:"diamond", value:"12", revealCard:false}} containerHeight={containerHeight} containerWidth={containerWidth}/>
-                    </div> : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
+        <div className={classes.outer}>
+                <header className={classes.title}>AGNES SOLITARE</header>
+                <Grid container justifyContent="center" spacing={2}>
+                    <Grid item>
+                        <ThemeProvider theme ={buttonTheme}>
+                            <Button onClick={() =>handleButtonClick("New Game")}>New Game</Button>
+                        </ThemeProvider>
+                    </Grid>
+                    <Grid item>
+                        <ThemeProvider theme ={buttonTheme}>
+                            <Button onClick={() =>handleButtonClick("Reset Game")}>Reset Game</Button>
+                        </ThemeProvider>
+
+                    </Grid>
+                    <Grid item>
+                        <ThemeProvider theme ={buttonTheme}>
+                            <Button onClick={() =>handleButtonClick("Undo Move")} >Undo Move</Button>
+                        </ThemeProvider>
+
+                    </Grid>
+                    <Grid item>
+                        <ThemeProvider theme ={buttonTheme}>
+                            <Button onClick={() =>handleButtonClick("Redo Move")}>Redo Move</Button>
+                        </ThemeProvider>
+                    </Grid>
+                    <Grid item>
+                        <ThemeProvider theme ={buttonTheme}>
+                            <Button onClick={() =>handleButtonClick("Hint")} >Hint</Button>
+                        </ThemeProvider>
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    <InvisibleCard containerHeight={containerHeight} containerWidth={containerWidth}/>
+            <div className={classes.root}>
+                <Grid container justifyContent="center" spacing={5}>
+                    <Grid item>
+                        {cardsLeft.length !== 0 ?<div style={{'cursor':"pointer"}} onClick={addMoreCards}>
+                        <PlayingCard  card={{suite:"diamond", value:"12", revealCard:false}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                        </div> : <BlankCardSpace containerHeight={containerHeight} containerWidth={containerWidth}/>}
+                    </Grid>
+                    <Grid item>
+                        <InvisibleCard containerHeight={containerHeight} containerWidth={containerWidth}/>
+                    </Grid>
+                    <Grid item>
+                        <InvisibleCard containerHeight={containerHeight} containerWidth={containerWidth}/>
+                    </Grid>
+                    <Grid item>
+                        <PlayingCards  type={'foundation'} cards={firstFoundation}    currentPile={foundation1} containerHeight={containerHeight} containerWidth={containerWidth}  stopHandler={foundationCardStopHandler} /> 
+                    </Grid>
+                    <Grid item>
+                        <PlayingCards type={'foundation'}  cards={secondFoundation}    currentPile={foundation2} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={foundationCardStopHandler}  /> 
+                    </Grid>
+                    <Grid item>      
+                        <PlayingCards  type={'foundation'} cards={thirdFoundation} currentPile={foundation3} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={foundationCardStopHandler}  /> 
+                    </Grid>
+                    <Grid item>
+                        <PlayingCards  type={'foundation'} cards={fourthFoundation} currentPile={foundation4} containerHeight={containerHeight} containerWidth={containerWidth}  stopHandler={foundationCardStopHandler}/> 
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    <InvisibleCard containerHeight={containerHeight} containerWidth={containerWidth}/>
+                <br/>
+                <Grid container justifyContent={"center"} spacing={5}>
+                    <Grid item>
+                        <PlayingCards  type={'pile'} cards={firstPile}    currentPile={pile1} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler}  /> 
+                    </Grid>
+                    <Grid item>
+                        <PlayingCards type={'pile'} cards={secondPile}  currentPile={pile2} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler} />  
+                    </Grid>
+                    <Grid item>
+                        <PlayingCards  type={'pile'} cards={thirdPile}   currentPile={pile3} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler} />
+                    </Grid>
+                    <Grid item>
+                        <PlayingCards type={'pile'} cards={fourthPile}  currentPile={pile4} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler} />       
+                    </Grid>
+                    <Grid item>
+                        <PlayingCards  type={'pile'} cards={fifthPile}   currentPile={pile5} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler}  />
+                    </Grid>
+                    <Grid item>
+                        <PlayingCards type={'pile'} cards={sixthPile}   currentPile={pile6} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler}  />
+                    </Grid>
+                    <Grid item>
+                        <PlayingCards type={'pile'} cards={seventhPile} currentPile={pile7} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler} />
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    <PlayingCards  type={'foundation'} cards={firstFoundation}    currentPile={foundation1} containerHeight={containerHeight} containerWidth={containerWidth}  stopHandler={foundationCardStopHandler} /> 
-                </Grid>
-                <Grid item>
-                    <PlayingCards type={'foundation'}  cards={secondFoundation}    currentPile={foundation2} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={foundationCardStopHandler}  /> 
-                </Grid>
-                <Grid item>      
-                    <PlayingCards  type={'foundation'} cards={thirdFoundation} currentPile={foundation3} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={foundationCardStopHandler}  /> 
-                </Grid>
-                <Grid item>
-                    <PlayingCards  type={'foundation'} cards={fourthFoundation} currentPile={foundation4} containerHeight={containerHeight} containerWidth={containerWidth}  stopHandler={foundationCardStopHandler}/> 
-                </Grid>
-            </Grid>
-            <br/>
-            <Grid container justifyContent={"center"} spacing={5}>
-                <Grid item>
-                    <PlayingCards  type={'pile'} cards={firstPile}    currentPile={pile1} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler}  /> 
-                </Grid>
-                <Grid item>
-                     <PlayingCards type={'pile'} cards={secondPile}  currentPile={pile2} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler} />  
-                </Grid>
-                <Grid item>
-                    <PlayingCards  type={'pile'} cards={thirdPile}   currentPile={pile3} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler} />
-                </Grid>
-                <Grid item>
-                    <PlayingCards type={'pile'} cards={fourthPile}  currentPile={pile4} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler} />       
-                </Grid>
-                <Grid item>
-                     <PlayingCards  type={'pile'} cards={fifthPile}   currentPile={pile5} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler}  />
-                </Grid>
-                <Grid item>
-                    <PlayingCards type={'pile'} cards={sixthPile}   currentPile={pile6} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler}  />
-                </Grid>
-                <Grid item>
-                     <PlayingCards type={'pile'} cards={seventhPile} currentPile={pile7} containerHeight={containerHeight} containerWidth={containerWidth} stopHandler={pileCardStopHandler} />
-                </Grid>
-            </Grid>
-            <GameOverDialogue title={"The Game Is OVER!"} open={gameEnd} setOpen={setGameEnd} onConfirm={resetGame}> Would you like to Reset the Game? You can do so later.</GameOverDialogue>
+                <GameOverDialogue title={"The Game Is OVER!"} open={gameEnd} setOpen={setGameEnd} onConfirm={resetGame}> The Game is Over! Would you like to Reset the Game? You can do so later.</GameOverDialogue>
+                <GameOverDialogue title={"Reset Game?"} open={manuallyResetGame} setOpen={setManuallyResetGame} onConfirm={resetGame}> Would you like to Reset the Game?</GameOverDialogue>
+                <GameOverDialogue title={"start new Game?"} open={manuallyStartNewGame} setOpen={setManuallyStartNewGame} onConfirm={newGame}> Would you like to start a new Game?</GameOverDialogue>
+
+            </div>
         </div>
         );
 };

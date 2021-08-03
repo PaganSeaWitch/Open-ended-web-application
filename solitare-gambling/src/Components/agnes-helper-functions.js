@@ -5,6 +5,7 @@ export function CheckAgnesRulesForTransferingToPiles(cardToCheck, newPile){
     if(newPile.length === 1){
         return false;
     }
+    
     const cardToCheckAgainst = newPile[newPile.length -1];
     const suite = cardToCheck.suite;
     const otherSuite = cardToCheckAgainst.suite;
@@ -17,6 +18,16 @@ export function CheckAgnesRulesForTransferingToPiles(cardToCheck, newPile){
 }
 
 
+export function CheckAgnesRulesForTransferingToPilesSingle(cardToCheck, cardToCheckAgainst){
+    const suite = cardToCheck.suite;
+    const otherSuite = cardToCheckAgainst.suite;
+    if(checkSuiteColor(suite, otherSuite)){
+        const value = cardToCheck.value;
+        const otherValue = cardToCheckAgainst.value;
+        return checkValueIsHigher(value, otherValue);
+    }
+    return false
+}
 
 
 export function CheckAgnesRulesForTransferingToFoundation(cardToCheck, newFoundation, defaultValue){
@@ -30,6 +41,9 @@ export function CheckAgnesRulesForTransferingToFoundation(cardToCheck, newFounda
     const value = cardToCheck.value;
     const otherValue = cardToCheckAgainst.value;
     if(suite === otherSuite){
+        if(otherValue === '13'){
+            return value === '1'
+        }
         return checkValueIsHigher(otherValue, value)
     }
     return false;

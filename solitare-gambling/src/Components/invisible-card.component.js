@@ -43,7 +43,7 @@ const InvisibleCard = ({containerWidth, containerHeight}) => {
             maxWidth: cardWidth + adjustment,
             maxHeight: cardHeight * 32.5,
             "white-space": "pre-wrap",
-            
+            backgroundColor : "lightslategray",
         },
         content: {
           maxWidth: cardWidth + adjustment,
@@ -52,7 +52,13 @@ const InvisibleCard = ({containerWidth, containerHeight}) => {
           margin: "-25px -10px -16px -6px",
           textAlign:"center",
           fontsize: 16,
-          
+          "webkit-touch-callout": "none", /* iOS Safari */
+          "webkit-user-select": "none", /* Safari */
+          "khtml-user-select": "none", /* Konqueror HTML */
+          "moz-user-select": "none", /* Old versions of Firefox */
+          "ms-user-select": "none", /* Internet Explorer/Edge */
+          "user-select": "none", /* Non-prefixed version, currently
+                                            supported by Chrome, Edge, Opera and Firefox */
         },
       });
 

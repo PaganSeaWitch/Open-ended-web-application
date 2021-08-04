@@ -1,21 +1,21 @@
-import {useWindowDimensions} from "./helper-functions.componet";
+import {useWindowDimensions} from "../../Helper Functions/helper-functions.componet";
 import React, { useState, useEffect} from "react";
 import Grid from '@material-ui/core/Grid';
 import PlayingCard from "./card.component";
 import InvisibleCard from "./invisible-card.component";
 import PlayingCards from "./cards.component";
-import { pile1,pile2,pile3,pile4,pile5,pile6,pile7, whereIsPileCard, getPileName} from "./pile-helper-functions";
+import { pile1,pile2,pile3,pile4,pile5,pile6,pile7, whereIsPileCard, getPileName} from "../../Helper Functions/pile-helper-functions";
 import { CheckAgnesRulesForTransferingToPiles, CheckAgnesRulesForTransferingToFoundation,CheckAgnesRulesForTransferingToPilesSingle } from "./agnes-helper-functions";
-import { foundation1, foundation2, foundation3, foundation4, WhereIsFoundationCard} from './foundation-helper-functions.js'
+import { foundation1, foundation2, foundation3, foundation4, WhereIsFoundationCard} from '../../Helper Functions/foundation-helper-functions.js'
 import GameOverDialogue from "./Game-over-dialogue.component";
-import {getStandardDeckOfCards, getRandomCards, addCardProperties, removePrexistingCards, addPrexistingCards} from "./game-helper-functions"
+import {getStandardDeckOfCards, getRandomCards, addCardProperties, removePrexistingCards, addPrexistingCards} from "../../Helper Functions/game-helper-functions"
 import BlankCardSpace from "./blank-card-space.component";
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from "@material-ui/core";
 import {ThemeProvider } from "@material-ui/core/styles";
-import { buttonTheme } from "./styler-helper";
+import { buttonTheme } from "../../Helper Functions/styler-helper";
 import _ from "lodash" // Import the entire lodash library
-import { getTitleOfValue } from "./card-helper-functions.component";
+import { getTitleOfValue } from "../../Helper Functions/card-helper-functions.component";
 const Agnes = () =>{
 
     const { height, width } = useWindowDimensions();
@@ -301,7 +301,7 @@ const Agnes = () =>{
         }
 
         CheckForDragErrors(oldArray);
-        const redoMove =addToPile(transferArray, newPile);
+        const redoMove = addToPile(transferArray, newPile);
         const turnArray = turns;
 
         if(currentTurn +1 !== turns.length){

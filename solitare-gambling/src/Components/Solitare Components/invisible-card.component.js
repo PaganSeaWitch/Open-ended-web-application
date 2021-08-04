@@ -3,9 +3,9 @@ import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 import CardContent from '@material-ui/core/CardContent';
 import calculateTextWidth from "calculate-text-width"
-import { fontString, getCardHeight, getCardWidth, getAdjustment} from './card-helper-functions.component';
+import { fontString, getCardHeight, getCardWidth, getAdjustment} from '../../Helper Functions/card-helper-functions.component';
 
-const BlankCardSpace = ({containerWidth, containerHeight}) => {
+const InvisibleCard = ({containerWidth, containerHeight}) => {
 
 
     const getOptLengthForCardBackMiddle = () =>{
@@ -43,23 +43,29 @@ const BlankCardSpace = ({containerWidth, containerHeight}) => {
             maxWidth: cardWidth + adjustment,
             maxHeight: cardHeight * 32.5,
             "white-space": "pre-wrap",
-            "background-color": "#f0f4ff",
-            
+            backgroundColor : "lightslategray",
         },
         content: {
           maxWidth: cardWidth + adjustment,
           maxHeight: cardHeight * 32.5,
+          display: 'inline-block',
           margin: "-25px -10px -16px -6px",
           textAlign:"center",
           fontsize: 16,
-          
+          "webkit-touch-callout": "none", /* iOS Safari */
+          "webkit-user-select": "none", /* Safari */
+          "khtml-user-select": "none", /* Konqueror HTML */
+          "moz-user-select": "none", /* Old versions of Firefox */
+          "ms-user-select": "none", /* Internet Explorer/Edge */
+          "user-select": "none", /* Non-prefixed version, currently
+                                            supported by Chrome, Edge, Opera and Firefox */
         },
       });
 
       const classes = useStyles();
 
     return (
-        <Card className ={classes.root} variant={"outlined"}>
+        <Card elevation={0} className ={classes.root} >
             <CardContent className = {classes.content}> 
                 {blankHeight()}
             </CardContent>
@@ -69,4 +75,4 @@ const BlankCardSpace = ({containerWidth, containerHeight}) => {
 	
 };
 
-export default BlankCardSpace
+export default InvisibleCard

@@ -1,8 +1,9 @@
 import "./wdyr"
 import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import ClockSolitare from "./Components/clock-solitare.component";
-import Agnes from "./Components/agnes.component";
+import ClockSolitare from "./Components/Solitare Components/clock-solitare.component";
+import Agnes from "./Components/Solitare Components/agnes.component";
+import Bar from "./Components/Bar Components/bar.component";
 const App = () => {
 
     return (
@@ -24,6 +25,13 @@ const App = () => {
         <Route path="/agnes" exact render={(props) => (
             <>
                 {<Agnes/>}
+            </>
+        )}
+        />
+
+    <Route path="/" exact render={(props) => (
+            <>
+                {<Bar/>}
             </>
         )}
         />

@@ -1,5 +1,5 @@
 
-import { suite1, suite2, suite3, suite4 } from './card-helper-functions.component';
+import { suite1, suite2, suite3, suite4 } from '../../Helper Functions/card-helper-functions.component';
 
 export function CheckAgnesRulesForTransferingToPiles(cardToCheck, newPile){
     if(newPile.length === 1){

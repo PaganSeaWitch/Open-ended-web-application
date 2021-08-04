@@ -1,12 +1,12 @@
 import React from 'react';
-import {useWindowDimensions} from "./helper-functions.componet"
+import {useWindowDimensions} from "../../Helper Functions/helper-functions.componet"
 import PlayingCard from "./card.component";
 import Grid from '@material-ui/core/Grid';
 import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Countdown from 'react-countdown';
-import { suite1, suite2, suite3, suite4 } from './card-helper-functions.component';
-import { getStandardDeckOfCards, getRandomCard} from './game-helper-functions';
+import { suite1, suite2, suite3, suite4 } from '../../Helper Functions/card-helper-functions.component';
+import { getStandardDeckOfCards, getRandomCard} from '../../Helper Functions/game-helper-functions';
 const ClockSolitare = () => {
 	
     const { height, width } = useWindowDimensions();

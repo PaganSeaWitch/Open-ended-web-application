@@ -1,7 +1,8 @@
 import PlayingCard from "./card.component";
 import Draggable from 'react-draggable';
 import { makeStyles } from '@material-ui/core/styles';
-const DraggableCard = ({id, z, card, currentPile, containerWidth, containerHeight, stopHandler, newPosition, stack, startHandler, dragHandler}) =>{
+import React from "react";
+const Card = ({id, z, card, currentPile, containerWidth, containerHeight, stopHandler, newPosition, stack, startHandler, dragHandler}) =>{
 
     
     const useStyles = makeStyles({
@@ -39,5 +40,5 @@ const DraggableCard = ({id, z, card, currentPile, containerWidth, containerHeigh
         </Draggable>
         );
 };
-
+const DraggableCard = React.memo(Card)
 export default DraggableCard;

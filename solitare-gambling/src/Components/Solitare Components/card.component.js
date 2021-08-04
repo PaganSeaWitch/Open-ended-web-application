@@ -3,8 +3,8 @@ import calculateTextWidth from "calculate-text-width"
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
-import { fontString, getCardHeight, getCardWidth, getAdjustment, getRoyalValue} from './card-helper-functions.component';
-const PlayingCard = ({card, containerWidth, containerHeight, stack}) => {
+import { fontString, getCardHeight, getCardWidth, getAdjustment, getRoyalValue} from '../../Helper Functions/card-helper-functions.component';
+const DeckCard = ({card, containerWidth, containerHeight, stack}) => {
     //const fontString = "500 normal 16px Dejavu Serif"
 
 
@@ -14,7 +14,6 @@ const PlayingCard = ({card, containerWidth, containerHeight, stack}) => {
     const hearts = "♥";
     const clubs = "♣"; 
     const cardBack = "░";
-
 
 
     const getMidHeight = () =>{
@@ -61,8 +60,6 @@ const PlayingCard = ({card, containerWidth, containerHeight, stack}) => {
           } 
     }
     
-
-
 
     const getMiddleValueCardPart = () =>{
         return linebreak  + ".".repeat(getOptLengthForMidSuite() <= 0 ? 1 : getOptLengthForMidSuite()+2) +getSuite() + ".".repeat(getOptLengthForMidSuite()<= 0 ? 1 : getOptLengthForMidSuite()+1) 
@@ -263,5 +260,5 @@ const PlayingCard = ({card, containerWidth, containerHeight, stack}) => {
 	
 	
 };
-
+const PlayingCard = React.memo(DeckCard)
 export default PlayingCard

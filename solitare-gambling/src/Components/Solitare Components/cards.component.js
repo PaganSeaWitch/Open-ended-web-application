@@ -4,7 +4,7 @@ import PlayingCard from './card.component';
 import DraggableCard from './draggable-card.component';
 import BlankCardSpace from './blank-card-space.component';
 import { useState, useEffect } from 'react';
-const PlayingCards = ({type, cards, currentPile, containerWidth, containerHeight, stopHandler, dragHandler, startHandler}) => {
+const Cards = ({type, cards, currentPile, containerWidth, containerHeight, stopHandler, dragHandler, startHandler}) => {
 
     const [pile,setPile] = useState([])
     let currentDragCardAmt = 0;
@@ -66,5 +66,5 @@ const PlayingCards = ({type, cards, currentPile, containerWidth, containerHeight
         </div>
     );
 }
-
+const PlayingCards = React.memo(Cards);
 export default PlayingCards

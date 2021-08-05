@@ -8,8 +8,9 @@ const Bar = () => {
     
 
     return (
-        <div>
-            THIS IS A BAR
+        <div className={"card"}>
+            {"\n\n\n"}
+            {"|\n"+"|"}
         </div>
     );
 	

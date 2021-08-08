@@ -21,7 +21,7 @@ const GameOverDialogue = (props) => {
                     color="secondary"
                 >
                     No
-        </Button>
+                </Button>
                 <Button
                     variant="contained"
                     onClick={() => {
@@ -31,7 +31,7 @@ const GameOverDialogue = (props) => {
                     color="default"
                 >
                     Yes
-        </Button>
+                </Button>
             </DialogActions>
         </Dialog>
     );

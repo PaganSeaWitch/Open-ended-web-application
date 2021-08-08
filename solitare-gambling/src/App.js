@@ -3,7 +3,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import ClockSolitare from "./Components/Solitare Components/clock-solitare.component";
 import Agnes from "./Components/Solitare Components/agnes.component";
-import Bar from "./Components/Bar Components/bar.component";
+import PachinkoMachine from "./Components/pachinko Components/pachinko-machine.component";
+import GenerationalWealth from "./Components/Generational Wealth/generational-wealth.component";
 const App = () => {
 
     return (
@@ -28,10 +29,15 @@ const App = () => {
             </>
         )}
         />
-
-    <Route path="/" exact render={(props) => (
+    <Route path="/Wealth" exact render={(props) => (
             <>
-                {<Bar/>}
+                {<GenerationalWealth/>}
+            </>
+        )}
+        />
+    <Route path="/pachinko" exact render={(props) => (
+            <>
+                {<PachinkoMachine/>}
             </>
         )}
         />

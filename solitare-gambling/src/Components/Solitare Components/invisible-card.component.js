@@ -52,6 +52,7 @@ const InvisibleCard = ({containerWidth, containerHeight}) => {
           margin: "-25px -10px -16px -6px",
           textAlign:"center",
           fontsize: 16,
+          font :"500 normal 16px Dejavu Serif",
           "webkit-touch-callout": "none", /* iOS Safari */
           "webkit-user-select": "none", /* Safari */
           "khtml-user-select": "none", /* Konqueror HTML */

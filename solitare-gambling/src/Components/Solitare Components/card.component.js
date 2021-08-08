@@ -229,12 +229,13 @@ const DeckCard = ({card, containerWidth, containerHeight, stack}) => {
             marginTop: ( typeof(stack) !== 'undefined'? (stack === "first" ? moveUpBy("whole"): moveUpBy("part")) : "auto"),
             marginBottom: "auto",
 
+
         },
         content: {
           display: 'inline-block',
           margin: "-25px -10px -16px -6px",
           textAlign:"center",
-          fontsize: 16,
+          font :"500 normal 16px Dejavu Serif",
           "webkit-touch-callout": "none", /* iOS Safari */
           "webkit-user-select": "none", /* Safari */
           "khtml-user-select": "none", /* Konqueror HTML */

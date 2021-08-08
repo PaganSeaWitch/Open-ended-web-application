@@ -52,7 +52,8 @@ const BlankCardSpace = ({containerWidth, containerHeight}) => {
           margin: "-25px -10px -16px -6px",
           textAlign:"center",
           fontsize: 16,
-          
+          font :"500 normal 16px Dejavu Serif",
+
         },
       });
 

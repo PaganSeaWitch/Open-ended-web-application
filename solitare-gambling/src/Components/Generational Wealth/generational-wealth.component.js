@@ -5,7 +5,7 @@ import Saving from './about-saving.component';
 import Beginning from './beginning.component';
 const GenerationalWealth = () => {
  
-  const [page, setPage] = useState('beginning');
+  const [page, setPage] = useState('main');
   const changePage=(page)=>{
     setPage(page);
   }

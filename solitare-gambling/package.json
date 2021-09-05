@@ -16,10 +16,13 @@
     "react-countdown": "^2.3.2",
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.3",
+    "react-redux": "^7.2.5",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "react-spring": "^9.2.4",
+    "reduce-reducers": "^1.0.4",
+    "redux": "^4.1.1",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

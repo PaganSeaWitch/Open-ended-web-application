@@ -743,9 +743,6 @@ const Agnes = () =>{
         return "No hints avalible, try moving cards around or restart/start new game"
     }
 
-    const addPrevHint = () =>{
-        setPrevHint = hint;
-    }
 
     const hint = getHintForDialogue();
 //#endregion
@@ -929,7 +926,7 @@ const Agnes = () =>{
                 <GameOverDialogue title={"The Game Is OVER!"} open={gameEnd} setOpen={setGameEnd} onConfirm={resetGame}> The Game is Over! Would you like to Reset the Game? You can do so later.</GameOverDialogue>
                 <GameOverDialogue title={"Reset Game?"} open={manuallyResetGame} setOpen={setManuallyResetGame} onConfirm={resetGame}> Would you like to Reset the Game?</GameOverDialogue>
                 <GameOverDialogue title={"start new Game?"} open={manuallyStartNewGame} setOpen={setManuallyStartNewGame} onConfirm={newGame}> Would you like to start a new Game?</GameOverDialogue>
-                <GameOverDialogue title={"Hint"} open={getHint} setOpen={setGetHint} onConfirm={addPrevHint}>{hint}</GameOverDialogue>
+                <GameOverDialogue title={"Hint"} open={getHint} setOpen={setGetHint} onConfirm={() => {}}>{hint}</GameOverDialogue>
 
             </div>
         </div>

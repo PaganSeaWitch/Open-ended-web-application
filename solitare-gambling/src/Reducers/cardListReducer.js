@@ -5,6 +5,7 @@ const cardRevealReducer = (state = defaultState, action, suite) =>{
            if(suite === action.suite){
                 return action.execute(state);
            }
+           return state;
         default:
             return state;
     }

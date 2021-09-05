@@ -10,6 +10,8 @@ import { getStandardDeckOfCards, getRandomCard} from '../../Helper Functions/gam
 import { useSelector, useDispatch } from 'react-redux';
 import reveal from '../../Actions/Reveal';
 import reset from '../../Actions/Reset';
+import revealKing from '../../Actions/RevealKing';
+import revealNewValue from '../../Actions/RevealNewValue';
 const ClockSolitare = () => {
 	
     const { height, width } = useWindowDimensions();
@@ -21,43 +23,16 @@ const ClockSolitare = () => {
     const [stateOfGame, setStateOfGame] = useState("continue")
     const [timer, setTimer] = useState(Date.now()+miliSeconds)
     const [cardsLeft, setCardsLeft] = useState([])
+    const king1CurrentValue = useSelector(state => state.king1.value)
+    const king1ActualSuite = useSelector(state => state.king1.suite)
+    const king2CurrentValue = useSelector(state => state.king2.value)
+    const king2ActualSuite = useSelector(state => state.king2.suite)
+    const king3CurrentValue = useSelector(state => state.king3.value)
+    const king3ActualSuite = useSelector(state => state.king3.suite)
+    const king4currentValue = useSelector(state => state.king4.value)
+    const king4actualSuite = useSelector(state => state.king4.suite)
 
-    const [suite1KingValues, setSuite1KingValues] = useState({
-        "suite" : "?",
-        "value" : "?",
-        "reveal" : false,
-    })
-
-
-    const [suite2KingValues, setSuite2KingValues] = useState({
-        "suite" : "?",
-        "value" : "?",
-        "reveal" : false,
-    })
-
-
-    const [suite3KingValues, setSuite3KingValues] = useState({
-        "suite" : "?",
-        "value" : "?",
-        "reveal" : false,
-    })
-
-
-    const [suite4KingValues, setSuite4KingValues] = useState({
-        "suite" : "?",
-        "value" : "?",
-        "reveal" : false,
-    })
-
-
-    const [kingValues] = useState({
-        [suite1] : suite1KingValues,
-        [suite2]: suite2KingValues,
-        [suite3]: suite3KingValues,
-        [suite4]: suite4KingValues,
-    })
-    
-
+    const kingValues = [suite1, suite2, suite3, suite4];
     
     
     const setRef = (countdown) => {
@@ -71,24 +46,26 @@ const ClockSolitare = () => {
         let currentValue;
         let actualSuite;
         let currentKing;
-        for(const key in kingValues){
-            currentKing = key;
+        
+        for(let i = 0; i < kingValues.length; i++){
+
+            currentKing = kingValues[i];
             switch(currentKing){
                 case(suite1):
-                    currentValue = suite1KingValues["value"]
-                    actualSuite = suite1KingValues["suite"]
+                    currentValue = king1CurrentValue
+                    actualSuite = king1ActualSuite
                     break;
                 case(suite2):
-                    currentValue = suite2KingValues["value"]
-                    actualSuite = suite2KingValues["suite"]
+                    currentValue = king2CurrentValue
+                    actualSuite = king2ActualSuite
                     break;
                 case(suite3):
-                    currentValue = suite3KingValues["value"]
-                    actualSuite = suite3KingValues["suite"]
+                    currentValue = king3CurrentValue
+                    actualSuite = king3ActualSuite
                     break;
                 case(suite4):
-                    currentValue = suite4KingValues["value"]
-                    actualSuite = suite4KingValues["suite"]
+                    currentValue = king4currentValue
+                    actualSuite = king4actualSuite
                     break;
                 default:
                     currentValue = "?"
@@ -102,30 +79,7 @@ const ClockSolitare = () => {
                 console.log(currentKing)
                 if(actualSuite !== currentKing){
                     currentValue = "?";
-                    switch(actualSuite){
-                        case(suite1):
-                            setSuite1KingValues({...suite1KingValues,"suite": suite1, 
-                            "value": "13",
-                            "reveal": true})
-                            break;
-                        case(suite2):
-                            setSuite2KingValues({...suite2KingValues,"suite": suite2, 
-                            "value": "13",
-                            "reveal": true})
-                            break;
-                        case(suite3):
-                            setSuite3KingValues({...suite4KingValues,"suite": suite3, 
-                            "value": "13",
-                            "reveal": true})
-                            break;
-                        case(suite4):
-                            setSuite4KingValues({...suite4KingValues,"suite": suite4, 
-                            "value": "13",
-                            "reveal": true})
-                            break;
-                        default:
-                            return;
-                    }
+                    dispatch(revealKing({"value" : "13", "reveal" : true, "suite" : actualSuite}));
                 }
 
             }
@@ -140,47 +94,20 @@ const ClockSolitare = () => {
             return;
         }
 
-
+        console.log("WHAT IS VLAUE: ? :"+ currentValue)
         if(currentValue !== "?"){
             dispatch(reveal(currentValue, actualSuite));
         }
+
         const newCard = getRandomCard(cardsLeft, setCardsLeft);
         const cardString = "" + newCard.value;
-        kingValues[currentKing] = cardString;
 
         const cardObject = {
             "suite" : newCard.suite, 
             "value" : cardString,
             "reveal": true }
-
-
-        switch(currentKing){
-            case(suite1):
-                setSuite1KingValues({...suite1KingValues,"suite": cardObject.suite, 
-                "value": cardObject.value,
-                "reveal": cardObject.reveal})
-                break;
-            case(suite2):
-                setSuite2KingValues({...suite2KingValues,"suite": cardObject.suite, 
-                "value": cardObject.value,
-                "reveal": cardObject.reveal})
-                break;
-            case(suite3):
-                setSuite3KingValues({...suite3KingValues,"suite": cardObject.suite, 
-                "value": cardObject.value,
-                "reveal": cardObject.reveal})
-                break;
-            case(suite4):
-                setSuite4KingValues({...suite4KingValues,"suite": cardObject.suite, 
-                "value": cardObject.value,
-                "reveal": cardObject.reveal})
-                break;
-            default:
-                console.log("Defaulted!")
-                return;
-        }
         
-
+        dispatch(revealNewValue(cardObject, currentKing));
     }
 
 
@@ -190,18 +117,6 @@ const ClockSolitare = () => {
 
 
     const resetValues = ()=>{
-        setSuite1KingValues({...suite1KingValues,"suite": "?", 
-                "value": "?",
-                "reveal": false})
-        setSuite2KingValues({...suite2KingValues,"suite": "?", 
-            "value": "?",
-            "reveal": false})
-        setSuite3KingValues({...suite3KingValues,"suite": "?", 
-            "value": "?",
-            "reveal": false})
-        setSuite4KingValues({...suite4KingValues,"suite": "?", 
-            "value": "?",
-            "reveal": false})
         dispatch(reset());
         setStateOfGame("continue");
     }
@@ -397,16 +312,16 @@ const ClockSolitare = () => {
                     <Grid item>
                         <Grid container justifyContent="center" spacing={2}>
                             <Grid item>
-                                <PlayingCard card={{suite:suite1KingValues["suite"],value:suite1KingValues["value"],revealCard:suite1KingValues["reveal"]}}  containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:useSelector(state => state.king1.suite),value:useSelector(state => state.king1.value),revealCard:useSelector(state => state.king1.reveal)}}  containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard card={{suite:suite2KingValues["suite"],value:suite2KingValues["value"],revealCard:suite2KingValues["reveal"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:useSelector(state => state.king2.suite),value:useSelector(state => state.king2.value),revealCard:useSelector(state => state.king2.reveal)}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard card={{suite:suite3KingValues["suite"],value:suite3KingValues["value"],revealCard:suite3KingValues["reveal"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:useSelector(state => state.king3.suite),value:useSelector(state => state.king4.value),revealCard:useSelector(state => state.king3.reveal)}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                             <Grid item>
-                                <PlayingCard card={{suite:suite4KingValues["suite"],value:suite4KingValues["value"],revealCard:suite4KingValues["reveal"]}} containerHeight={containerHeight} containerWidth={containerWidth}/>
+                                <PlayingCard card={{suite:useSelector(state => state.king4.suite),value:useSelector(state => state.king4.value),revealCard:useSelector(state => state.king4.reveal)}} containerHeight={containerHeight} containerWidth={containerWidth}/>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -524,5 +439,5 @@ const ClockSolitare = () => {
 	
 	
 };
-
+ClockSolitare.whyDidYouRender = true;
 export default ClockSolitare

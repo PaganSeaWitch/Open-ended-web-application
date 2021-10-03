@@ -79,11 +79,8 @@ const Bar = () => {
         return frameString;
     }
     return (
-        <div className={"card"}>
-    
-            {displayFrame(frame)}
-            {"[(((OO\\_______________/OO)))]                    \n"}
-            {" |    |                |    |                     \n"}
+        <div>
+            "Ce n'est pas un div"
         </div>
     );
 	

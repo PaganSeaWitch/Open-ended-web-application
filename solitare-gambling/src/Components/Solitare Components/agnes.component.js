@@ -772,7 +772,7 @@ const Agnes = () =>{
             setGameStart(false)
             startGame()
         }
-    }, [gameStart])
+    }, [])
 
 
     useEffect(() => {

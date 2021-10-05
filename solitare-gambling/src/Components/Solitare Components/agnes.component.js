@@ -25,7 +25,11 @@ const Agnes = () =>{
 
     const [cardsLeft, setCardsLeft] = useState(getStandardDeckOfCards)
     const [thisGamesCards, setThisGamesCards] = useState([])
+    
+    
     const [gameEnd, setGameEnd] = useState(false);
+    
+    
     const [gameStart, setGameStart] = useState(true)
     const [firstFoundation, setFirstFoundation] = useState([{}]);
     const [secondFoundation, setSecondFoundation] = useState([{}])
@@ -69,6 +73,8 @@ const Agnes = () =>{
         [pile7] : seventhPile,
     }
 
+    
+    
 //#region set and get pile/foundation functions
     const setPile = (tempArray, pile) =>{
         switch(pile){
@@ -97,6 +103,7 @@ const Agnes = () =>{
                 console.log(pile)
                 break;
         }
+        setGameEnd(prevState => !prevstate);
     }
 
 
@@ -772,7 +779,10 @@ const Agnes = () =>{
             setGameStart(false)
             startGame()
         }
-    }, [])
+        Return () =>{
+            SaveGame();
+        }
+    });
 
 
     useEffect(() => {
